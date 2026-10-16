@@ -1,0 +1,17 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+  "python.terminal.activateEnvironment": false,
+  "files.watcherExclude": {
+    "**/.venv/**": true,
+    "**/data/**": true,
+    "**/models/**": true
+  },
+  "search.exclude": {
+    "**/.venv": true,
+    "**/data": true,
+    "**/models": true
+  },
+  "files.exclude": {
+    "**/__pycache__": true
+  }
+}

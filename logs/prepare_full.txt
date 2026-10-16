@@ -1,0 +1,84 @@
+﻿discovered images (mapped classes only): 40981
+
+PROPOSED PLANTVILLAGE MAPPING
+  Apple___Apple_scab                                      -> Apple___Apple_scab
+  Apple___Black_rot                                       -> Apple___Black_rot
+  Apple___Cedar_apple_rust                                -> Apple___Cedar_apple_rust
+  Apple___healthy                                         -> Apple___healthy
+  Cherry_(including_sour)___Powdery_mildew                -> Cherry___Powdery_mildew
+  Cherry_(including_sour)___healthy                       -> Cherry___healthy
+  Grape___Black_rot                                       -> Grape___Black_rot
+  Grape___Esca_(Black_Measles)                            -> Grape___Esca
+  Grape___Leaf_blight_(Isariopsis_Leaf_Spot)              -> Grape___Leaf_blight
+  Grape___healthy                                         -> Grape___healthy
+  Orange___Haunglongbing_(Citrus_greening)                -> Orange___Haunglongbing
+  Peach___Bacterial_spot                                  -> Peach___Bacterial_spot
+  Peach___healthy                                         -> Peach___healthy
+  Pepper,_bell___Bacterial_spot                           -> Pepper_bell___Bacterial_spot
+  Pepper,_bell___healthy                                  -> Pepper_bell___healthy
+  Strawberry___Leaf_scorch                                -> Strawberry___Leaf_scorch
+  Strawberry___healthy                                    -> Strawberry___healthy
+  Tomato___Bacterial_spot                                 -> Tomato___Bacterial_spot
+  Tomato___Early_blight                                   -> Tomato___Early_blight
+  Tomato___Late_blight                                    -> Tomato___Late_blight
+  Tomato___Leaf_Mold                                      -> Tomato___Leaf_Mold
+  Tomato___Septoria_leaf_spot                             -> Tomato___Septoria_leaf_spot
+  Tomato___Spider_mites Two-spotted_spider_mite           -> Tomato___Spider_mites
+  Tomato___Target_Spot                                    -> Tomato___Target_Spot
+  Tomato___Tomato_Yellow_Leaf_Curl_Virus                  -> Tomato___Yellow_Leaf_Curl_Virus
+  Tomato___Tomato_mosaic_virus                            -> Tomato___Mosaic_virus
+  Tomato___healthy                                        -> Tomato___healthy
+
+PROPOSED PLANTDOC MAPPING
+  Apple Scab Leaf                          -> Apple___Apple_scab
+  Apple rust leaf                          -> Apple___Cedar_apple_rust
+  Apple leaf                               -> Apple___healthy
+  Bell_pepper leaf                         -> Pepper_bell___healthy
+  Cherry leaf                              -> Cherry___healthy
+  Peach leaf                               -> Peach___healthy
+  Strawberry leaf                          -> Strawberry___healthy
+  grape leaf                               -> Grape___healthy
+  grape leaf black rot                     -> Grape___Black_rot
+  Tomato leaf                              -> Tomato___healthy
+  Tomato Early blight leaf                 -> Tomato___Early_blight
+  Tomato Septoria leaf spot                -> Tomato___Septoria_leaf_spot
+  Tomato leaf bacterial spot               -> Tomato___Bacterial_spot
+  Tomato leaf late blight                  -> Tomato___Late_blight
+  Tomato leaf mosaic virus                 -> Tomato___Mosaic_virus
+  Tomato leaf yellow virus                 -> Tomato___Yellow_Leaf_Curl_Virus
+  Tomato mold leaf                         -> Tomato___Leaf_Mold
+  Tomato two spotted spider mites leaf     -> Tomato___Spider_mites
+
+PLANTDOC EXCLUDED
+  Bell_pepper leaf spot          ambiguous: generic 'leaf spot' not verified as Bacterial_spot
+  Blueberry leaf                 crop not supported
+  Corn Gray leaf spot            crop not supported
+  Corn leaf blight               crop not supported
+  Corn rust leaf                 crop not supported
+  Potato leaf early blight       crop not supported
+  Potato leaf late blight        crop not supported
+  Raspberry leaf                 crop not supported
+  Soyabean leaf                  crop not supported
+  Squash Powdery mildew leaf     crop not supported
+
+leaf-map lookup status (PlantVillage target images): {'ok': 31375, 'ok_alias_frogeye': 621, 'no_leaf_map_entry': 7507}
+
+TEN EXAMPLES of PlantVillage group-id extraction (filename -> key -> group_id):
+  'c2b1ba42-7911-4013-93ed-111745171f0a___FAM_B.Msls 4386.JPG' -> 'fam_b.msls 4386' -> PV:Grape___Esca_(Black_Measles):319.0  [ok]
+  '115ce7f7-f1b1-4f24-a96f-07107c9e703c___RS_HL 5791.JPG' -> 'rs_hl 5791' -> PV:Apple___healthy:25.0  [ok]
+  'b76271aa-ca0b-44ac-a6f9-379ef70ef443___JR_B.Spot 3389.JPG' -> 'jr_b.spot 3389' -> PV:Pepper,_bell___Bacterial_spot:JR_26.0  [ok]
+  '9eb18b0e-457d-4419-8bd6-607fb65b5285___Rut._Bact.S 1081.JPG' -> 'rut._bact.s 1081' -> PV:Peach___Bacterial_spot:57.0  [ok]
+  'ff6441c8-7c51-4f49-8ad3-a557bc0de3e2___UF.Citrus_HLB_Lab 0153.JPG' -> 'uf.citrus_hlb_lab 0153' -> PV:Orange___Haunglongbing_(Citrus_greening):16.0  [ok]
+  '005591af-575a-422a-a457-720d9d3b0283___CREC_HLB 7298.JPG' -> 'crec_hlb 7298' -> PV:Orange___Haunglongbing_(Citrus_greening):OCT_685.0  [ok]
+  '5309771c-b262-437f-9f79-f02f3bcd979c___FAM_B.Msls 3895.JPG' -> 'fam_b.msls 3895' -> PV:Grape___Esca_(Black_Measles):197.0  [ok]
+  'a87a7d1e-6e5a-406a-b8f5-db73a8dae2b8___YLCV_GCREC 1936.JPG' -> 'ylcv_gcrec 1936' -> PV:Tomato___Tomato_Yellow_Leaf_Curl_Virus:11.0  [ok]
+  '8a14060f-b831-48a4-aa6c-6c1d74c3a6c5___FAM_B.Rot 3527.JPG' -> 'fam_b.rot 3527' -> PV:Grape___Black_rot:244.0  [ok]
+  '7a73a7f9-27e3-4898-be48-97ddcaa094a4___GH_HL Leaf 381.JPG' -> 'gh_hl leaf 381' -> PVK:Tomato___healthy:gh_hl leaf 381  [no_leaf_map_entry]
+
+sampled 23559  valid 23559  dropped 0 {}
+wrote C:\Plant model\fruit_health\data\processed\index.csv
+
+Crop x cause x acquisition:
+{('Apple', 'Biotic', 'field'): 182, ('Apple', 'Biotic', 'lab'): 1526, ('Apple', 'None', 'field'): 91, ('Apple', 'None', 'lab'): 909, ('Cherry', 'Biotic', 'lab'): 1000, ('Cherry', 'None', 'field'): 57, ('Cherry', 'None', 'lab'): 854, ('Grape', 'Biotic', 'field'): 64, ('Grape', 'Biotic', 'lab'): 2936, ('Grape', 'None', 'field'): 69, ('Grape', 'None', 'lab'): 423, ('Orange', 'Biotic', 'lab'): 1000, ('Peach', 'Biotic', 'lab'): 1000, ('Peach', 'None', 'field'): 112, ('Peach', 'None', 'lab'): 360, ('Pepper_bell', 'Biotic', 'lab'): 997, ('Pepper_bell', 'None', 'field'): 61, ('Pepper_bell', 'None', 'lab'): 939, ('Strawberry', 'Biotic', 'lab'): 1000, ('Strawberry', 'None', 'field'): 96, ('Strawberry', 'None', 'lab'): 456, ('Tomato', 'Biotic', 'field'): 683, ('Tomato', 'Biotic', 'lab'): 7744, ('Tomato', 'None', 'field'): 63, ('Tomato', 'None', 'lab'): 937}
+
+Crops with no abiotic examples: ALL (no abiotic data obtained)

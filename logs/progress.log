@@ -1,0 +1,210 @@
+2026-10-13T22:42:50 PART0: OS Win11 Home 10.0.26300; CPU i5-13420H 8c/12t; RAM 15.6GB; disk free 275GB; Python 3.11.0; GPU RTX 3050 Laptop 4GB driver 592.82 CUDA 13.1; net pypi/github/kaggle OK; kaggle.json NOT found
+2026-10-13T22:42:50 DECISION: GPU <8GB -> img 224, batch 16, AMP on, max 12 epochs
+2026-10-13T22:43:41 venv created
+2026-10-14T14:58:53 PHASE B: project path confirmed by user = C:\Users\dishi\OneDrive\Desktop\Plant model\fruit_health (copy to C:\Users\dishi\fruit_health not found; OneDrive original used per user instruction; NOTE: large data/models will sync via OneDrive unless excluded)
+2026-10-14T14:58:53 PHASE B: .venv verified Python 3.11.0, pip 26.2.1, exit 0; no packages installed
+2026-10-14T14:58:53 PHASE B: created .gitignore, README.md, src/config.py, src/log_util.py, outputs/LIMITATIONS.md (no existing files overwritten); disk free ~251 GB
+2026-10-14T14:58:53 NEXT SAFE ACTION: await approval for torch==2.12.1 torchvision==0.27.1 cu126 install into .venv
+2026-10-14T16:44:54 PHASE B: project relocated by user to C:\Plant model\fruit_health (copy of OneDrive project, includes Phase B files). Copied .venv tested: Python 3.11.0 prefix=C:\Plant model\fruit_health\.venv, pip 26.2.1, exit 0 (works despite stale path in pyvenv.cfg 'command' line). Disk free ~240 GB. Original OneDrive project untouched from here on. Nothing installed.
+2026-10-14T16:45:24 INSTALL START (user approved): pip install torch==2.12.1 torchvision==0.27.1 --index-url https://download.pytorch.org/whl/cu126 into C:\Plant model\fruit_health\.venv
+2026-10-14T17:05:17 INSTALL END: exit=0 elapsed=1193s
+2026-10-14T17:06:30 VERIFIED: torch 2.12.1+cu126, torchvision 0.27.1+cu126 in project .venv; cuda available (RTX 3050 Laptop, CUDA 12.6 build); CPU matmul ok; GPU 4x4 ones matmul sum=64.0 (correct; earlier 'expect 256' note was my arithmetic slip). Download 2620.7 MB, install 1193s, venv ~5-6GB. requirements.txt written. Note: numpy/pillow/networkx etc. came in as torch/torchvision dependencies. CPU fallback not yet tested explicitly beyond CPU tensor op. NEXT SAFE ACTION: stop; await approval for dataset inspection (GitHub/HF listings, no downloads) and for remaining deps.
+2026-10-14T17:08:31 DATASET INSPECTION (read-only, no downloads): PlantVillage GH ~2.1GB (no license field) / HF mohanty/PlantVillage CC-BY-SA-3.0 ~2GB with leaf_id grouping; PlantDoc GH CC-BY-4.0 ~0.95GB 2598 imgs, no Orange; OLID I Kaggle-only, no accessible copy found; Zenodo tomato-N record is PDF only. Report: outputs/dataset_inspection.md. NEXT SAFE ACTION: ask user re abiotic data options and approval to download PlantDoc (~0.95GB) + PlantVillage (~2GB).
+2026-10-14T17:13:07 DECISION (user): abiotic option (b) - proceed without abiotic data; cause head/abiotic tables/N-NK matrix will be documented as unsupported. APPROVED: PlantDoc GH clone (~0.95GB), PlantVillage HF (~2GB), packages pandas scikit-learn opencv-python imagehash matplotlib tqdm huggingface_hub into .venv.
+2026-10-14T17:19:58 PIP small-packages install exit=0
+2026-10-14T17:20:11 PlantDoc git clone exit=128
+2026-10-14T17:20:37 PlantDoc git clone exit=128: objects fetched but Windows checkout failed on invalid filename chars ('?'). FALLBACK: src/extract_plantdoc.py reads blobs via git cat-file into data/raw/plantdoc with sanitized names + manifest.
+2026-10-14T17:27:45 PlantDoc extraction attempt1 flawed (case-insensitive name collisions overwrote 6 files; 9 stale long-name files). Preserved as data/raw/plantdoc_attempt1_flawed. Fixed script (case-insens collisions, sha1 blob verify) and re-extracting to data/raw/plantdoc.
+2026-10-14T17:33:33 PlantVillage HF download exit=0 data.zip bytes=2184723441
+2026-10-14T17:37:15 PlantVillage HF data.zip 2083.5MB verified (testzip ok, 54344 color imgs, license CC-BY-SA-3.0 per HF card); extracted target-crop color images to data/raw/plantvillage. PlantDoc 2581 files verified via sha1 in data/raw/plantdoc. Packages installed (pandas, scikit-learn, opencv-python, imagehash, matplotlib, tqdm, huggingface_hub); requirements.txt updated. NEXT SAFE ACTION: Phase C label mapping/pilot - await user review.
+2026-10-14T19:23:26 prepare_data pilot: discovered=40981 sampled=1762 valid=1762 dropped={} out=index_pilot.csv
+2026-10-14T19:24:52 prepare_data pilot: discovered=40981 sampled=1762 valid=1762 dropped={} out=index_pilot.csv
+2026-10-14T19:25:53 split_data data/processed/index_pilot.csv: n=1762 groups=1670 exact_dup_pairs=0 phash_pairs=9 splits={'train': np.int64(1233), 'test': np.int64(265), 'val': np.int64(264)} out=splits_pilot.csv
+2026-10-14T19:36:53 severity pilot: unhealthy=1202 counts={'Mild': 239, 'Severe': 461, 'Moderate': 416, 'Invalid': 86} mask_flags={'ok': 1073, 'leaf_too_small': 129}
+2026-10-14T19:37:16 PHASE C PILOT DONE (pilot subset only, NOT full data): mapping printed (PV 27 classes, PlantDoc 18 mapped, 10 excluded incl. ambiguous 'Bell_pepper leaf spot'); leaf-map covers 31375+621(alias frogeye) of 39503 PV images, 7507 fall back to original-image id + phash; pilot split passes group asserts. Severity heuristic pilot: 1202 unhealthy, 129 PlantDoc masks 'leaf_too_small' (GrabCut fails on field images), 86 invalid; masks spill onto stems/shadows (inflates damage); runtime 0.53s/img (~3.5h full) - needs multiprocessing/tuning. NEXT SAFE ACTION: await user decision before Phase D.
+2026-10-14T19:38:29 USER APPROVED: severity fixes (erosion, HSV fallback, valid flag, parallel) and Phase D full data prep; keep 'Bell_pepper leaf spot' excluded. Re-testing severity on pilot first.
+2026-10-14T19:41:19 severity data/processed/index_pilot.csv: unhealthy=1202 valid=1069 counts_valid={'Mild': 323, 'Severe': 368, 'Moderate': 378} flags={'ok': 1069, 'hsv_fallback': 132, 'mask_failed': 1}
+2026-10-14T19:44:35 severity data/processed/index_pilot.csv: unhealthy=1202 valid=1054 counts_valid={'Mild': 462, 'Severe': 287, 'Moderate': 305} flags={'ok': 1054, 'hsv_fallback': 131, 'mask_failed': 17}
+2026-10-14T19:44:53 PHASE D START: severity v2 pilot (shadow handling): 1054/1202 valid, 131 hsv_fallback, 17 mask_failed; known limits: gray lesions may be dropped from mask, field masks poor. Running full prepare_data.
+2026-10-14T19:54:02 prepare_data full: discovered=40981 sampled=23559 valid=23559 dropped={} out=index.csv
+2026-10-14T19:54:19 PHASE D: index.csv written (23559 valid, 0 dropped). Starting split_data then severity (background chain; outputs logs\split_full.txt, logs\severity_full.txt).
+2026-10-14T20:00:04 split_data data/processed/index.csv: n=23559 groups=10321 exact_dup_pairs=11 phash_pairs=506 splits={'train': np.int64(16635), 'test': np.int64(3464), 'val': np.int64(3460)} out=splits.csv
+2026-10-14T20:04:37 severity progress 2000/18132
+2026-10-14T20:08:13 severity progress 4000/18132
+2026-10-14T20:11:43 severity progress 6000/18132
+2026-10-14T20:15:41 severity progress 8000/18132
+2026-10-14T20:18:41 severity progress 10000/18132
+2026-10-14T20:23:21 severity progress 12000/18132
+2026-10-14T20:28:55 severity progress 14000/18132
+2026-10-14T20:36:26 severity progress 16000/18132
+2026-10-14T20:49:22 severity progress 18000/18132
+2026-10-14T20:49:45 severity data/processed/index.csv: unhealthy=18132 valid=17709 counts_valid={'Mild': 7904, 'Severe': 4446, 'Moderate': 5359} flags={'ok': 17709, 'hsv_fallback': 337, 'mask_failed': 86}
+2026-10-14T20:49:47 PHASE D chain finished (see logs\split_full.txt, logs\severity_full.txt)
+2026-10-14T20:50:25 PHASE D COMPLETE (verified outputs: data/processed/index.csv 23559 rows, splits.csv, severity.csv 18132 rows; asserts passed). LIMITATIONS.md updated. NEXT SAFE ACTION: Phase E model smoke test needs approval to download EfficientNet-B0 pretrained weights (~21MB).
+2026-10-14T21:15:44 USER APPROVED: EfficientNet-B0 ImageNet weights download (~21MB) into models/torch_cache; starting Phase E.
+2026-10-14T21:17:44 env_features: 23559 rows simulated; env_stats.json fitted on train n=16635; simulated: crop baseline + Gaussian noise, seed=md5(relative path)[:8]; independent of condition/health/cause; NOT sensor data
+2026-10-14T21:19:28 smoke_test: 18/18 passed; failed=[]
+2026-10-14T21:21:55 PHASE E COMPLETE: weights efficientnet_b0_rwightman-7f5810bc.pth 20.5MB in models/torch_cache; env.csv + models/env_stats.json (train-only stats) + models/label_maps.json written; smoke_test 18/18 passed (masked CE, ordinal loss/decode, 4 variants CPU fwd/bwd, feature dims 1280/32/1312, checkpoint reload, GPU AMP b8). Measured: data loading 0.291 s/batch8 (workers=0), GPU fusion step 0.433 s (peak VRAM 434MiB). Est. ~25 min/epoch -> ~3.4h per image-based variant at 8 epochs. NEXT SAFE ACTION: await approval/optimisation choice before Phase F (train.py not yet written).
+2026-10-14T21:23:05 USER APPROVED option 1: image cache 256x256 JPEG q95, batch size 8->16 (deliberate change, not OOM), loader workers 0->3. config.py to be updated.
+2026-10-15T12:27:38 build_cache: 23559/23559 present (5821 new), 704 MB in data/processed/cache256
+2026-10-15T12:35:27 verify_cache: checked=23559 bad=0
+2026-10-15T12:36:26 cache256 verified (23559 files, 0 bad). config.py: BATCH_SIZE 16, NUM_WORKERS 3 (user approved). train.py written. Running short timing test only (no checkpoints).
+2026-10-15T12:36:33 train fusion: start cfg={"variant": "fusion", "epochs": 8, "batch": 16, "workers": 3, "img_size": 224, "amp": true, "device": "cuda", "lr_head": 0.0003, "lr_backbone": 0.0001, "wd": 0.0001, "label_smoothing": 0.1, "grad_clip": 1.0, "patience": 3, "seed": 42, "n_train": 16635, "n_val": 3460, "condition_class_weights": false, "max_condition_imbalance_ratio": 2.99, "n_conditions": 27} class_weights_ratio=2.99
+2026-10-15T12:37:39 TIMING (fusion, batch16, 3 workers, cached 256px imgs): 0.185 s/step, 1039 steps/epoch -> ~3.2 min/epoch train + short val; peak VRAM 785 MiB. Est. ~30 min per image-based variant at 8 epochs (~1.5 h for image+fusion+shuffled), env-only a few minutes. Earlier 25 min/epoch estimate was data-loading bound. NEXT SAFE ACTION: await approval for Phase F training runs.
+2026-10-16T09:54:15 USER said 'continue' in reply to the Phase F proposal (env first as pipeline check, then image, fusion, fusion_shuffled_env; est. 1.5-2h total) -> treated as approval of that sequence. Starting env variant (background); will test interrupt/resume after 2 epochs.
+2026-10-16T09:54:45 train env: start cfg={"variant": "env", "epochs": 8, "batch": 16, "workers": 3, "img_size": 224, "amp": true, "device": "cuda", "lr_head": 0.0003, "lr_backbone": 0.0001, "wd": 0.0001, "label_smoothing": 0.1, "grad_clip": 1.0, "patience": 3, "seed": 42, "n_train": 16635, "n_val": 3460, "condition_class_weights": false, "max_condition_imbalance_ratio": 2.99, "n_conditions": 27} class_weights_ratio=2.99
+2026-10-16T09:55:26 train env epoch 0: train_loss 6.4686 val_loss 6.0966 health_acc 0.7844 cause_acc 1.0000(n=2714) cond_acc 0.0893 lr 3.00e-04 0.7 min checkpoint=last+best patience 0/3
+2026-10-16T09:55:36 train env epoch 1: train_loss 6.1877 val_loss 6.0322 health_acc 0.7844 cause_acc 1.0000(n=2714) cond_acc 0.0916 lr 2.89e-04 0.2 min checkpoint=last+best patience 0/3
+2026-10-16T09:56:22 train env: RESUMED from epoch 2 (best val 6.0322, patience counter 0)
+2026-10-16T09:56:22 train env: start cfg={"variant": "env", "epochs": 8, "batch": 16, "workers": 3, "img_size": 224, "amp": true, "device": "cuda", "lr_head": 0.0003, "lr_backbone": 0.0001, "wd": 0.0001, "label_smoothing": 0.1, "grad_clip": 1.0, "patience": 3, "seed": 42, "n_train": 16635, "n_val": 3460, "condition_class_weights": false, "max_condition_imbalance_ratio": 2.99, "n_conditions": 27} class_weights_ratio=2.99
+2026-10-16T09:57:12 train env epoch 2: train_loss 6.1547 val_loss 6.0182 health_acc 0.7844 cause_acc 1.0000(n=2714) cond_acc 0.0864 lr 2.56e-04 0.8 min checkpoint=last+best patience 0/3
+2026-10-16T09:57:24 train env epoch 3: train_loss 6.1453 val_loss 6.0109 health_acc 0.7844 cause_acc 1.0000(n=2714) cond_acc 0.0919 lr 2.07e-04 0.2 min checkpoint=last+best patience 0/3
+2026-10-16T09:57:35 train env epoch 4: train_loss 6.1395 val_loss 6.0055 health_acc 0.7844 cause_acc 1.0000(n=2714) cond_acc 0.0945 lr 1.50e-04 0.2 min checkpoint=last+best patience 0/3
+2026-10-16T09:57:45 train env epoch 5: train_loss 6.1368 val_loss 6.0055 health_acc 0.7844 cause_acc 1.0000(n=2714) cond_acc 0.0948 lr 9.26e-05 0.2 min checkpoint=last patience 1/3
+2026-10-16T09:57:57 train env epoch 6: train_loss 6.1340 val_loss 6.0027 health_acc 0.7844 cause_acc 1.0000(n=2714) cond_acc 0.0928 lr 4.39e-05 0.2 min checkpoint=last+best patience 0/3
+2026-10-16T09:58:09 train env epoch 7: train_loss 6.1333 val_loss 6.0029 health_acc 0.7844 cause_acc 1.0000(n=2714) cond_acc 0.0913 lr 1.14e-05 0.2 min checkpoint=last patience 1/3
+2026-10-16T09:58:10 train env: COMPLETE epochs_run=8 best_val_loss=6.0027
+2026-10-16T09:58:30 ENV variant COMPLETE after deliberate interrupt/resume test (killed mid-epoch 2; last.pt intact; resumed from epoch 2 OK; LR schedule continued). 8 epochs, best val_loss 6.0027, val health_acc 0.7844 (= constant 'Unhealthy' baseline, 2714/3460), cond_acc ~0.09, crop_acc ~0.46 (crop info is built into simulated baselines by design), cause_acc 1.0 (trivial: only Biotic labels exist, n=2714). Env epoch time ~0.2 min. Launching sequential chain image -> fusion -> fusion_shuffled_env (stops on first failure); logs/train_<variant>.txt.
+2026-10-16T09:58:32 CHAIN: starting variant image
+2026-10-16T09:58:41 train image: start cfg={"variant": "image", "epochs": 8, "batch": 16, "workers": 3, "img_size": 224, "amp": true, "device": "cuda", "lr_head": 0.0003, "lr_backbone": 0.0001, "wd": 0.0001, "label_smoothing": 0.1, "grad_clip": 1.0, "patience": 3, "seed": 42, "n_train": 16635, "n_val": 3460, "condition_class_weights": false, "max_condition_imbalance_ratio": 2.99, "n_conditions": 27} class_weights_ratio=2.99
+2026-10-16T10:01:10 train image epoch 0: train_loss 2.8185 val_loss 2.0217 health_acc 0.9925 cause_acc 1.0000(n=2714) cond_acc 0.9483 lr 3.00e-04 2.5 min checkpoint=last+best patience 0/3
+2026-10-16T10:02:38 train image epoch 1: train_loss 2.1448 val_loss 1.8976 health_acc 0.9939 cause_acc 1.0000(n=2714) cond_acc 0.9636 lr 2.89e-04 1.5 min checkpoint=last+best patience 0/3
+2026-10-16T10:03:13 SANITY FLAG: Environment-only cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T10:03:13 SANITY FLAG: Environment-only health: lab 0.795 vs field 0.592 (gap 20.3 pp > 10 pp)
+2026-10-16T10:03:13 evaluate: variants=['env'] test_n=3464; tables in outputs/tables
+2026-10-16T10:03:54 train image epoch 2: train_loss 2.0170 val_loss 1.8757 health_acc 0.9905 cause_acc 1.0000(n=2714) cond_acc 0.9682 lr 2.56e-04 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T10:05:10 train image epoch 3: train_loss 1.9529 val_loss 1.8578 health_acc 0.9939 cause_acc 1.0000(n=2714) cond_acc 0.9668 lr 2.07e-04 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T10:06:34 train image epoch 4: train_loss 1.9037 val_loss 1.8026 health_acc 0.9965 cause_acc 1.0000(n=2714) cond_acc 0.9705 lr 1.50e-04 1.4 min checkpoint=last+best patience 0/3
+2026-10-16T10:07:50 train image epoch 5: train_loss 1.8669 val_loss 1.8059 health_acc 0.9931 cause_acc 1.0000(n=2714) cond_acc 0.9717 lr 9.26e-05 1.3 min checkpoint=last patience 1/3
+2026-10-16T10:09:05 train image epoch 6: train_loss 1.8278 val_loss 1.7933 health_acc 0.9957 cause_acc 1.0000(n=2714) cond_acc 0.9714 lr 4.39e-05 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T10:10:21 train image epoch 7: train_loss 1.8218 val_loss 1.7932 health_acc 0.9951 cause_acc 1.0000(n=2714) cond_acc 0.9734 lr 1.14e-05 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T10:10:22 train image: COMPLETE epochs_run=8 best_val_loss=1.7932
+2026-10-16T10:10:54 CHAIN: variant image finished exit=0
+2026-10-16T10:10:54 CHAIN: starting variant fusion
+2026-10-16T10:10:58 train fusion: start cfg={"variant": "fusion", "epochs": 8, "batch": 16, "workers": 3, "img_size": 224, "amp": true, "device": "cuda", "lr_head": 0.0003, "lr_backbone": 0.0001, "wd": 0.0001, "label_smoothing": 0.1, "grad_clip": 1.0, "patience": 3, "seed": 42, "n_train": 16635, "n_val": 3460, "condition_class_weights": false, "max_condition_imbalance_ratio": 2.99, "n_conditions": 27} class_weights_ratio=2.99
+2026-10-16T10:13:01 train fusion epoch 0: train_loss 2.7897 val_loss 2.0261 health_acc 0.9925 cause_acc 1.0000(n=2714) cond_acc 0.9503 lr 3.00e-04 2.0 min checkpoint=last+best patience 0/3
+2026-10-16T10:13:14 IMAGE variant COMPLETE: 8 epochs, best val_loss 1.7932 (epoch 7), val health_acc 0.9951, cond_acc 0.9734, crop_acc ~0.985 (validation only; test evaluation pending). ~1.3 min/epoch (faster than the 3.2 min/epoch timing-test estimate). predict.py verified with image variant: lab+field images, env defaults message, input validation (missing/fake/tiny image, nan and out-of-range env rejected), low-confidence message on non-leaf images, Grad-CAM overlays written to outputs/predictions/<timestamp>/. FINDING: untrained cause head emitted 'Abiotic' on an out-of-distribution image although no abiotic example exists -> predict.py now only reports cause classes seen in training (maps['cause_trained_classes']=['Biotic']) and says so; models/label_maps.json regenerated. Heatmap spot-check (2 images): attention on lesion/leaf tissue, not background.
+2026-10-16T10:14:15 train fusion epoch 1: train_loss 2.1350 val_loss 1.8925 health_acc 0.9962 cause_acc 1.0000(n=2714) cond_acc 0.9642 lr 2.89e-04 1.2 min checkpoint=last+best patience 0/3
+2026-10-16T10:15:35 train fusion epoch 2: train_loss 2.0082 val_loss 1.8759 health_acc 0.9936 cause_acc 1.0000(n=2714) cond_acc 0.9659 lr 2.56e-04 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T10:16:55 train fusion epoch 3: train_loss 1.9474 val_loss 1.8640 health_acc 0.9957 cause_acc 1.0000(n=2714) cond_acc 0.9688 lr 2.07e-04 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T10:18:14 train fusion epoch 4: train_loss 1.8985 val_loss 1.8058 health_acc 0.9968 cause_acc 1.0000(n=2714) cond_acc 0.9743 lr 1.50e-04 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T10:19:35 train fusion epoch 5: train_loss 1.8651 val_loss 1.8158 health_acc 0.9934 cause_acc 1.0000(n=2714) cond_acc 0.9711 lr 9.26e-05 1.3 min checkpoint=last patience 1/3
+2026-10-16T10:20:53 train fusion epoch 6: train_loss 1.8283 val_loss 1.7984 health_acc 0.9954 cause_acc 1.0000(n=2714) cond_acc 0.9725 lr 4.39e-05 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T10:23:28 train fusion epoch 7: train_loss 1.8225 val_loss 1.8001 health_acc 0.9948 cause_acc 1.0000(n=2714) cond_acc 0.9711 lr 1.14e-05 2.6 min checkpoint=last patience 1/3
+2026-10-16T10:23:30 train fusion: COMPLETE epochs_run=8 best_val_loss=1.7984
+2026-10-16T10:23:36 CHAIN: variant fusion finished exit=0
+2026-10-16T10:23:36 CHAIN: starting variant fusion_shuffled_env
+2026-10-16T10:23:48 train fusion_shuffled_env: start cfg={"variant": "fusion_shuffled_env", "epochs": 8, "batch": 16, "workers": 3, "img_size": 224, "amp": true, "device": "cuda", "lr_head": 0.0003, "lr_backbone": 0.0001, "wd": 0.0001, "label_smoothing": 0.1, "grad_clip": 1.0, "patience": 3, "seed": 42, "n_train": 16635, "n_val": 3460, "condition_class_weights": false, "max_condition_imbalance_ratio": 2.99, "n_conditions": 27} class_weights_ratio=2.99
+2026-10-16T10:29:08 train fusion_shuffled_env epoch 0: train_loss 2.7984 val_loss 2.0294 health_acc 0.9928 cause_acc 1.0000(n=2714) cond_acc 0.9512 lr 3.00e-04 5.3 min checkpoint=last+best patience 0/3
+2026-10-16T10:33:24 train fusion_shuffled_env epoch 1: train_loss 2.1428 val_loss 1.8925 health_acc 0.9965 cause_acc 1.0000(n=2714) cond_acc 0.9653 lr 2.89e-04 4.3 min checkpoint=last+best patience 0/3
+2026-10-16T10:37:22 train fusion_shuffled_env epoch 2: train_loss 2.0128 val_loss 1.8730 health_acc 0.9936 cause_acc 1.0000(n=2714) cond_acc 0.9659 lr 2.56e-04 3.9 min checkpoint=last+best patience 0/3
+2026-10-16T10:40:59 train fusion_shuffled_env epoch 3: train_loss 1.9501 val_loss 1.8615 health_acc 0.9957 cause_acc 1.0000(n=2714) cond_acc 0.9676 lr 2.07e-04 3.6 min checkpoint=last+best patience 0/3
+2026-10-16T10:44:56 train fusion_shuffled_env epoch 4: train_loss 1.9003 val_loss 1.8054 health_acc 0.9965 cause_acc 1.0000(n=2714) cond_acc 0.9740 lr 1.50e-04 3.9 min checkpoint=last+best patience 0/3
+2026-10-16T10:50:09 train fusion_shuffled_env epoch 5: train_loss 1.8667 val_loss 1.8165 health_acc 0.9934 cause_acc 1.0000(n=2714) cond_acc 0.9699 lr 9.26e-05 5.2 min checkpoint=last patience 1/3
+2026-10-16T10:54:23 train fusion_shuffled_env epoch 6: train_loss 1.8291 val_loss 1.7982 health_acc 0.9948 cause_acc 1.0000(n=2714) cond_acc 0.9723 lr 4.39e-05 4.2 min checkpoint=last+best patience 0/3
+2026-10-16T10:58:47 train fusion_shuffled_env epoch 7: train_loss 1.8238 val_loss 1.7996 health_acc 0.9945 cause_acc 1.0000(n=2714) cond_acc 0.9720 lr 1.14e-05 4.4 min checkpoint=last patience 1/3
+2026-10-16T10:58:51 train fusion_shuffled_env: COMPLETE epochs_run=8 best_val_loss=1.7982
+2026-10-16T10:59:00 CHAIN: variant fusion_shuffled_env finished exit=0
+2026-10-16T10:59:29 PHASE F COMPLETE: all 4 variants trained 8 epochs each (best val_loss env 6.0027, image 1.7932, fusion 1.7984, fusion_shuffled_env 1.7982). Note: fusion_shuffled_env epochs slowed to ~4 min by external CPU contention (VS Code python processes), results unaffected. Note: evaluate.py was pipeline-tested on the env model's test split before the image-based models existed; no model selection or tuning used test results. Starting Phase G evaluation (test split).
+2026-10-16T11:04:36 SANITY FLAG: Image-only cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T11:04:36 SANITY FLAG: Environment-only cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T11:04:36 SANITY FLAG: Fusion cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T11:04:36 SANITY FLAG: Fusion (shuffled env) cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T11:04:36 SANITY FLAG: Image-only condition: lab 0.989 vs field 0.617 (gap 37.3 pp > 10 pp)
+2026-10-16T11:04:36 SANITY FLAG: Fusion condition: lab 0.990 vs field 0.631 (gap 35.9 pp > 10 pp)
+2026-10-16T11:04:36 SANITY FLAG: Fusion (shuffled env) condition: lab 0.990 vs field 0.636 (gap 35.4 pp > 10 pp)
+2026-10-16T11:04:36 evaluate: variants=['image', 'env', 'fusion', 'fusion_shuffled_env'] test_n=3464; tables in outputs/tables
+2026-10-16T11:05:10 PHASE G (evaluation) done on TEST split: image-only crop 0.990/health 0.995/cond 0.967/sev-F1 0.825; fusion ~identical; shuffled-env ~identical to fusion (env adds nothing); env-only at/near majority baseline except crop-prior effects; lab cond 0.990 vs field 0.631 (like-for-like biotic 0.978 vs 0.541, -43.7pp); PlantVillage crop acc 1.000 on n=3258 -> investigating (sanity probe + cross-split duplicates). Tables in outputs/tables.
+2026-10-16T11:10:41 SANITY PROBE: Cause accuracy may reflect dataset background or source differences rather than leaf symptoms.
+2026-10-16T11:11:07 sanity: probe rows=6, cause_suspicious=True, test imgs within H<=6 of train=0, md5 cross-split=0
+2026-10-16T11:11:45 SANITY (12.1/12.2): background probe from blurred 16x16 inputs: cause acc 0.890 (bal 0.788, majority 0.783), source acc 0.989 (majority 0.941), condition 27-class acc 0.630 (chance 0.022); border strips: cause 0.863/bal 0.722, source 0.991, condition 0.502 -> WARNING printed: cause accuracy may reflect dataset background or source differences rather than leaf symptoms. Cross-split pHash: 0 test imgs within Hamming<=6 of train, 297 (8.6%) <=8, 1165 (33.6%) <=10; closest pairs visually inspected (outputs/figures/crosssplit_pairs_preview.png): different leaves/crops on the same gray lab backdrop, not same-leaf leakage. MD5: 0 hashes across splits (11 duplicate files, all kept within one split). Bug fixed: pandas parsed label 'None' (healthy cause) as NaN (probe crashed; training/eval unaffected since cause masked to unhealthy); loaders now fillna('None').
+2026-10-16T11:13:04 explain gradcam fusion: 118 overlays; attention summary in outputs/explain/attention_summary_fusion.csv
+2026-10-16T11:15:28 explain: env permutation importance saved
+2026-10-16T11:15:53 EXPLAIN run1 used purely random overlay selection (almost only lab images); preserved in outputs/explain/_superseded_random_selection_fusion; regenerating Grad-CAM with up to 2 field slots per crop/head/status. Permutation importance (fusion, shuffled): all |delta acc| <= 0.0007 (<=0.07 pp) -> model does not use the simulated env inputs.
+2026-10-16T11:17:11 explain gradcam fusion: 118 overlays; attention summary in outputs/explain/attention_summary_fusion.csv
+2026-10-16T11:18:09 GRAD-CAM review (outputs/explain/REVIEW.md): 118 overlays (fusion; health+condition heads). Lab: attention on leaf body/lesions, little on backdrop. Field: central blob on leaf or most damaged part, coarse; one orchard image attended red FRUIT not leaves; healthy-crop confusions (Cherry->Peach, Grape->Strawberry) with attention on leaf tissue; stock-photo watermark seen on a correct image; center bias confounds lesion-focus claims. Heatmaps do not prove causal reasoning.
+2026-10-16T11:19:04 demo_predict PlantVillage: exit=0, 3 test images
+2026-10-16T11:19:38 demo_predict PlantDoc: exit=0, 3 test images
+2026-10-16T11:19:58 PHASE H: predict.py run on 3 seeded test images per source (outputs/predict_demo): PlantVillage 3/3 correct, PlantDoc 1/3 fully correct (2 confident wrong-crop errors, health right), OLID_I unavailable. Env-default message, cause-note, Grad-CAM and CSV outputs verified.
+2026-10-16T11:20:28 pipeline: RUN build_cache.py 
+2026-10-16T11:20:58 build_cache: 23559/23559 present (0 new), 704 MB in data/processed/cache256
+2026-10-16T11:21:00 pipeline: build_cache.py exit=0 (32s)
+2026-10-16T11:21:00 pipeline: RUN train.py --variant env
+2026-10-16T11:21:13 pipeline: train.py exit=0 (13s)
+2026-10-16T11:21:13 pipeline: RUN train.py --variant image
+2026-10-16T11:21:26 pipeline: train.py exit=0 (13s)
+2026-10-16T11:21:26 pipeline: RUN train.py --variant fusion
+2026-10-16T11:21:36 pipeline: train.py exit=0 (10s)
+2026-10-16T11:21:36 pipeline: RUN train.py --variant fusion_shuffled_env
+2026-10-16T11:21:46 pipeline: train.py exit=0 (10s)
+2026-10-16T11:24:21 HOUSEKEEPING: moved untrained smoke_ckpt.pt to models/_smoke_test/ (smoke_test.py now writes there); moved first-pilot severity debug images to outputs/severity_debug/_superseded_pilot_v1/ (current 24 debug_XX.png come from the full run with the final heuristic). train.py --all verified: all prep stages skipped as consistent, all 4 variants DONE, nothing recomputed.
+2026-10-16T11:29:51 SANITY FLAG: Image-only cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T11:29:51 SANITY FLAG: Environment-only cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T11:29:51 SANITY FLAG: Fusion cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T11:29:51 SANITY FLAG: Fusion (shuffled env) cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T11:29:51 SANITY FLAG: Image-only condition: lab 0.989 vs field 0.617 (gap 37.3 pp > 10 pp)
+2026-10-16T11:29:51 SANITY FLAG: Fusion condition: lab 0.990 vs field 0.631 (gap 35.9 pp > 10 pp)
+2026-10-16T11:29:51 SANITY FLAG: Fusion (shuffled env) condition: lab 0.990 vs field 0.636 (gap 35.4 pp > 10 pp)
+2026-10-16T11:29:51 evaluate: variants=['image', 'env', 'fusion', 'fusion_shuffled_env'] test_n=3464; tables in outputs/tables
+2026-10-16T11:30:40 smoke_test: 18/18 passed; failed=[]
+2026-10-16T11:31:29 PHASE I HANDOVER: verified deliverables present: README.md, requirements.txt (pinned versions), src/train.py (--all pipeline tested: all stages skipped consistently), outputs/LIMITATIONS.md, models/<variant>/best.pt+last.pt, label_maps.json, env_stats.json, history.csv + curves_*.png, outputs/tables (Tables 3-6, CIs, confusion matrices, per-group, sanity), outputs/severity_debug (24), outputs/explain (118 overlays + REVIEW.md), outputs/predict_demo, logs. evaluate.py re-run with final code -> all checked tables byte-identical (deterministic); smoke_test 18/18 pass. NOT RUN: 3-seed repeat (needs approval), SHAP, abiotic data. NEXT SAFE ACTION: await user decision on the 3-seed repeat; nothing else pending.
+2026-10-16T11:50:57 USER APPROVED (reply "yes") the three-seed repeat of the image-only model: new seeds 1, 2, 3 (data split fixed at 42; original seed-42 run kept as the 4th data point). train.py gained --seed (outputs to models/image_seed<N>/). Est. ~12 min per run. Also requested: a guide on how the user can run the model themselves (HOW_TO_RUN.md + run_predict.bat).
+2026-10-16T11:50:58 SEEDCHAIN: starting image seed 1
+2026-10-16T11:51:07 train image_seed1: start cfg={"variant": "image", "epochs": 8, "batch": 16, "workers": 3, "img_size": 224, "amp": true, "device": "cuda", "lr_head": 0.0003, "lr_backbone": 0.0001, "wd": 0.0001, "label_smoothing": 0.1, "grad_clip": 1.0, "patience": 3, "seed": 1, "run": "image_seed1", "split_seed": 42, "n_train": 16635, "n_val": 3460, "condition_class_weights": false, "max_condition_imbalance_ratio": 2.99, "n_conditions": 27} class_weights_ratio=2.99
+2026-10-16T11:53:14 train 2904.961032152176 epoch 0: train_loss 2.7959 val_loss 2.0454 health_acc 0.9832 cause_acc 1.0000(n=2714) cond_acc 0.9425 lr 3.00e-04 2.1 min checkpoint=last+best patience 0/3
+2026-10-16T11:53:47 USER GUIDE: wrote HOW_TO_RUN.md and run_predict.bat (drag-and-drop launcher; tested with a single image, a folder, and no argument - all behave as documented). Seed-repeat training still running in background.
+2026-10-16T11:54:24 BUGFIX train.py: my --seed edit reused the name run for both the run folder name and the epoch loss accumulator, so after the first step run was a float (log lines said train <float> epoch..., and DONE.json run + curves filename would be wrong). Renamed accumulator to run_loss (fix applies to seeds 2 and 3; seed 1 started on the old code - its checkpoints/history are unaffected, only DONE.json run field and the curves filename need repair after it finishes). Training math unchanged.
+2026-10-16T11:54:33 train 2220.398627281189 epoch 1: train_loss 2.1371 val_loss 1.9193 health_acc 0.9919 cause_acc 1.0000(n=2714) cond_acc 0.9604 lr 2.89e-04 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T11:55:47 train 2107.251453638077 epoch 2: train_loss 2.0282 val_loss 1.8863 health_acc 0.9922 cause_acc 1.0000(n=2714) cond_acc 0.9702 lr 2.56e-04 1.2 min checkpoint=last+best patience 0/3
+2026-10-16T11:57:04 train 2023.5866050720215 epoch 3: train_loss 1.9476 val_loss 1.8336 health_acc 0.9962 cause_acc 1.0000(n=2714) cond_acc 0.9717 lr 2.07e-04 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T11:58:17 train 1966.875995874405 epoch 4: train_loss 1.8930 val_loss 1.8148 health_acc 0.9951 cause_acc 1.0000(n=2714) cond_acc 0.9705 lr 1.50e-04 1.2 min checkpoint=last+best patience 0/3
+2026-10-16T11:59:30 train 1929.7010712623596 epoch 5: train_loss 1.8573 val_loss 1.8015 health_acc 0.9942 cause_acc 1.0000(n=2714) cond_acc 0.9746 lr 9.26e-05 1.2 min checkpoint=last+best patience 0/3
+2026-10-16T12:00:44 train 1907.386033296585 epoch 6: train_loss 1.8358 val_loss 1.7981 health_acc 0.9942 cause_acc 1.0000(n=2714) cond_acc 0.9728 lr 4.39e-05 1.2 min checkpoint=last+best patience 0/3
+2026-10-16T12:01:59 train 1891.2797623872757 epoch 7: train_loss 1.8203 val_loss 1.7951 health_acc 0.9942 cause_acc 1.0000(n=2714) cond_acc 0.9743 lr 1.14e-05 1.2 min checkpoint=last+best patience 0/3
+2026-10-16T12:02:00 train 1891.2797623872757: COMPLETE epochs_run=8 best_val_loss=1.7951
+2026-10-16T12:02:02 SEEDCHAIN: image seed 1 finished exit=0
+2026-10-16T12:02:02 SEEDCHAIN: starting image seed 2
+2026-10-16T12:02:09 train image_seed2: start cfg={"variant": "image", "epochs": 8, "batch": 16, "workers": 3, "img_size": 224, "amp": true, "device": "cuda", "lr_head": 0.0003, "lr_backbone": 0.0001, "wd": 0.0001, "label_smoothing": 0.1, "grad_clip": 1.0, "patience": 3, "seed": 2, "run": "image_seed2", "split_seed": 42, "n_train": 16635, "n_val": 3460, "condition_class_weights": false, "max_condition_imbalance_ratio": 2.99, "n_conditions": 27} class_weights_ratio=2.99
+2026-10-16T12:02:43 REPAIR seed 1 (finished on the old code, best val_loss 1.7951): DONE.json run field set to image_seed1 (original kept as DONE.json.bugged_copy), curves_image_seed1.png regenerated from history.csv, misnamed curves_1891.27....png moved to outputs/figures/_superseded. The progress.log lines 'train 1891.27...' for seed 1 are the bug's cosmetic effect; checkpoints/history were never affected.
+2026-10-16T12:04:04 train image_seed2 epoch 0: train_loss 2.8165 val_loss 2.0318 health_acc 0.9879 cause_acc 1.0000(n=2714) cond_acc 0.9486 lr 3.00e-04 1.9 min checkpoint=last+best patience 0/3
+2026-10-16T12:05:22 train image_seed2 epoch 1: train_loss 2.1492 val_loss 1.9097 health_acc 0.9934 cause_acc 1.0000(n=2714) cond_acc 0.9694 lr 2.89e-04 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T12:06:38 train image_seed2 epoch 2: train_loss 2.0254 val_loss 1.8664 health_acc 0.9948 cause_acc 1.0000(n=2714) cond_acc 0.9702 lr 2.56e-04 1.3 min checkpoint=last+best patience 0/3
+2026-10-16T12:07:51 train image_seed2 epoch 3: train_loss 1.9473 val_loss 1.8339 health_acc 0.9962 cause_acc 1.0000(n=2714) cond_acc 0.9691 lr 2.07e-04 1.2 min checkpoint=last+best patience 0/3
+2026-10-16T12:09:05 train image_seed2 epoch 4: train_loss 1.8961 val_loss 1.8105 health_acc 0.9939 cause_acc 1.0000(n=2714) cond_acc 0.9751 lr 1.50e-04 1.2 min checkpoint=last+best patience 0/3
+2026-10-16T12:10:19 train image_seed2 epoch 5: train_loss 1.8612 val_loss 1.8222 health_acc 0.9922 cause_acc 1.0000(n=2714) cond_acc 0.9714 lr 9.26e-05 1.2 min checkpoint=last patience 1/3
+2026-10-16T12:11:34 train image_seed2 epoch 6: train_loss 1.8397 val_loss 1.8086 health_acc 0.9936 cause_acc 1.0000(n=2714) cond_acc 0.9734 lr 4.39e-05 1.2 min checkpoint=last+best patience 0/3
+2026-10-16T12:13:18 train image_seed2 epoch 7: train_loss 1.8196 val_loss 1.8030 health_acc 0.9945 cause_acc 1.0000(n=2714) cond_acc 0.9731 lr 1.14e-05 1.7 min checkpoint=last+best patience 0/3
+2026-10-16T12:13:19 train image_seed2: COMPLETE epochs_run=8 best_val_loss=1.8030
+2026-10-16T12:13:23 SEEDCHAIN: image seed 2 finished exit=0
+2026-10-16T12:13:23 SEEDCHAIN: starting image seed 3
+2026-10-16T12:13:34 train image_seed3: start cfg={"variant": "image", "epochs": 8, "batch": 16, "workers": 3, "img_size": 224, "amp": true, "device": "cuda", "lr_head": 0.0003, "lr_backbone": 0.0001, "wd": 0.0001, "label_smoothing": 0.1, "grad_clip": 1.0, "patience": 3, "seed": 3, "run": "image_seed3", "split_seed": 42, "n_train": 16635, "n_val": 3460, "condition_class_weights": false, "max_condition_imbalance_ratio": 2.99, "n_conditions": 27} class_weights_ratio=2.99
+2026-10-16T12:16:25 train image_seed3 epoch 0: train_loss 2.8103 val_loss 2.0571 health_acc 0.9905 cause_acc 1.0000(n=2714) cond_acc 0.9329 lr 3.00e-04 2.9 min checkpoint=last+best patience 0/3
+2026-10-16T12:18:18 train image_seed3 epoch 1: train_loss 2.1413 val_loss 1.9176 health_acc 0.9942 cause_acc 1.0000(n=2714) cond_acc 0.9613 lr 2.89e-04 1.9 min checkpoint=last+best patience 0/3
+2026-10-16T12:20:09 train image_seed3 epoch 2: train_loss 2.0200 val_loss 1.8673 health_acc 0.9942 cause_acc 1.0000(n=2714) cond_acc 0.9659 lr 2.56e-04 1.8 min checkpoint=last+best patience 0/3
+2026-10-16T12:21:59 train image_seed3 epoch 3: train_loss 1.9483 val_loss 1.8272 health_acc 0.9945 cause_acc 1.0000(n=2714) cond_acc 0.9711 lr 2.07e-04 1.8 min checkpoint=last+best patience 0/3
+2026-10-16T12:23:55 train image_seed3 epoch 4: train_loss 1.9036 val_loss 1.8116 health_acc 0.9962 cause_acc 1.0000(n=2714) cond_acc 0.9725 lr 1.50e-04 1.9 min checkpoint=last+best patience 0/3
+2026-10-16T12:25:52 train image_seed3 epoch 5: train_loss 1.8631 val_loss 1.8232 health_acc 0.9939 cause_acc 1.0000(n=2714) cond_acc 0.9720 lr 9.26e-05 1.9 min checkpoint=last patience 1/3
+2026-10-16T12:51:19 train image_seed3 epoch 6: train_loss 1.8300 val_loss 1.7909 health_acc 0.9954 cause_acc 1.0000(n=2714) cond_acc 0.9711 lr 4.39e-05 25.4 min checkpoint=last+best patience 0/3
+2026-10-16T12:52:40 DEVIATION (logged): seed-3 run was slowed ~10x from epoch 6 by memory thrashing (Windows pages/sec ~900, disk 76%, only 0.7 GB RAM free; laptop on battery, Edge/Discord/VS Code open; my 6 loader workers used ~3.7 GB). Stopped the chain cleanly after seed 2 finished; seed 3 checkpoint intact at epoch 6. Resuming seed 3 (only epoch 7 left) with --workers 1 to reduce memory. Worker count affects only data-loading randomness streams, not the method; seed 3 epochs 0-6 used 3 workers.
+2026-10-16T12:52:40 SEEDCHAIN: resuming image seed 3 with --workers 1
+2026-10-16T12:53:07 train image_seed3: RESUMED from epoch 7 (best val 1.7909, patience counter 0)
+2026-10-16T12:53:07 train image_seed3: start cfg={"variant": "image", "epochs": 8, "batch": 16, "workers": 1, "img_size": 224, "amp": true, "device": "cuda", "lr_head": 0.0003, "lr_backbone": 0.0001, "wd": 0.0001, "label_smoothing": 0.1, "grad_clip": 1.0, "patience": 3, "seed": 3, "run": "image_seed3", "split_seed": 42, "n_train": 16635, "n_val": 3460, "condition_class_weights": false, "max_condition_imbalance_ratio": 2.99, "n_conditions": 27} class_weights_ratio=2.99
+2026-10-16T13:07:34 train image_seed3 epoch 7: train_loss 1.8214 val_loss 1.7916 health_acc 0.9948 cause_acc 1.0000(n=2714) cond_acc 0.9734 lr 1.14e-05 14.5 min checkpoint=last patience 1/3
+2026-10-16T13:07:35 train image_seed3: COMPLETE epochs_run=8 best_val_loss=1.7909
+2026-10-16T13:07:38 SEEDCHAIN: image seed 3 (resumed) finished exit=0
+2026-10-16T13:07:58 SEED REPEAT training COMPLETE: image seeds 1,2,3 (+ original 42): best val_loss 1.7951 / 1.8030 / 1.7909 (orig 1.7932). Seed 3 epoch 7 ran with 1 worker after the memory-thrash stop (see DEVIATION entry). Running seed_repeat.py (test split).
+2026-10-16T13:11:15 seed_repeat image: 4 runs evaluated; outputs/tables/seed_repeat_image.md
+2026-10-16T13:13:06 SANITY FLAG: Image-only cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T13:13:06 SANITY FLAG: Environment-only cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T13:13:06 SANITY FLAG: Fusion cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T13:13:06 SANITY FLAG: Fusion (shuffled env) cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+2026-10-16T13:13:06 SANITY FLAG: Image-only condition: lab 0.989 vs field 0.617 (gap 37.3 pp > 10 pp)
+2026-10-16T13:13:06 SANITY FLAG: Fusion condition: lab 0.990 vs field 0.631 (gap 35.9 pp > 10 pp)
+2026-10-16T13:13:06 SANITY FLAG: Fusion (shuffled env) condition: lab 0.990 vs field 0.636 (gap 35.4 pp > 10 pp)
+2026-10-16T13:13:06 evaluate: variants=['image', 'env', 'fusion', 'fusion_shuffled_env'] test_n=3464; tables in outputs/tables
+2026-10-16T13:13:41 SEED REPEAT COMPLETE + HANDOVER UPDATE: seed_repeat.py evaluated image seeds 42/1/2/3 on the test split (outputs/tables/seed_repeat_image.md/csv): condition acc 0.969 +/- 0.002, field condition 0.632 +/- 0.014, like-for-like biotic field 0.551 +/- 0.014, severity macro-F1 0.828 +/- 0.006. evaluate.py re-run after the edits: all checked tables/predictions byte-identical. LIMITATIONS.md, README.md and memory updated. User guide: HOW_TO_RUN.md + run_predict.bat (tested). NOT RUN: seed repeats of fusion variants, SHAP, abiotic data. NEXT SAFE ACTION: none pending.
+2026-10-16T13:17:48 VS CODE SETUP (user request): created .vscode/settings.json (interpreter = .venv, auto-activation off, watcher/search exclusions for .venv/data/models) and .vscode/launch.json (4 run configs: predict one image / folder / image+env values / smoke test, with path prompts). JSON validated; equivalent commands tested from project root without -I. HOW_TO_RUN.md section 2b added. The debugger UI itself was not driven (cannot automate VS Code here).
+2026-10-16T13:30:49 VS CODE: user ran 'Predict: one leaf photo' with an EMPTY path box (screenshot showed --image '' -> argparse 'expected one argument'; interpreter/venv launch itself worked). Fix: imagePath/folderPath prompts now pre-filled with the sample photo/folder defaults. Advised Ctrl+F5 (Run Without Debugging) to avoid the debugger pausing on argparse SystemExit.
+2026-10-16T13:32:54 VS CODE DIAGNOSIS: src/predict.py line 118 on disk reads 'args = -ap.parse_args()' (stray minus, file saved 13:31:18 from the user's editor; every run fails with TypeError). Not edited by me per the change-notice guidance. Verified in memory (user file untouched, md5 unchanged) that removing only that minus makes predict.py run correctly (Grape/Healthy on the sample photo). User told how to fix it by hand or to ask me to do it.
+2026-10-16T13:41:33 VS CODE: after the user removed the stray minus in predict.py (verified fixed on disk, runs OK), a second run still passed --image '' (likely VS Code remembering the earlier empty value of the promptString input). launch.json rewritten: entries 1 (fixed SAMPLE photo, no prompt), 2 (photo open in editor via file variable), 3 (typed path, new input ids), 4/5 folder, 6 env values, 7 smoke test. JSON + referenced paths validated; the exact args of entries 1 and 4 tested from the project root. HOW_TO_RUN.md 2b updated.
+2026-10-16T13:47:09 VS CODE SUPPORT: user pressed Run on the run_predict.bat tab (no photo given -> prints usage, expected) and a web image URL (vecteezy leaf photo) was pasted into line 9 of run_predict.bat (usage text only; not edited by me; launcher re-tested OK for file, folder and no-arg). Explained that predict.py needs a local image file, not a URL; gave save-then-run steps (entry 2: photo open in the editor).

@@ -1,0 +1,2 @@
+image,status,crop,crop_conf,health,health_conf,cause,cause_conf,condition,condition_conf,severity,severity_conf,p_gt_mild,p_gt_moderate,low_confidence_heads,temp,rainfall,humidity,soil_moisture,env_source,cam_path,variant
+outputs\predict_demo\PlantDoc\WildGrapeLeaf_cutout.jpg,ok,Grape,0.9369,Healthy,0.9483,None,nan,Grape___healthy,0.9399,None,nan,0.0618,0.0778,,23.376,65.146,62.736,45.13,training_average,,fusion

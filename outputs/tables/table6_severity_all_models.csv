@@ -1,0 +1,29 @@
+Model,Scope,Class,Precision,Recall,F1,Support
+Image-only,All unhealthy,Mild,0.887,0.899,0.893,1207
+Image-only,All unhealthy,Moderate,0.741,0.739,0.740,833
+Image-only,All unhealthy,Severe,0.852,0.833,0.843,624
+Image-only,Biotic,Mild,0.887,0.899,0.893,1207
+Image-only,Biotic,Moderate,0.741,0.739,0.740,833
+Image-only,Biotic,Severe,0.852,0.833,0.843,624
+Image-only,Abiotic,-,-,-,-,0
+Environment-only,All unhealthy,Mild,0.573,0.147,0.234,1207
+Environment-only,All unhealthy,Moderate,0.321,0.906,0.474,833
+Environment-only,All unhealthy,Severe,0.000,0.000,0.000,624
+Environment-only,Biotic,Mild,0.573,0.147,0.234,1207
+Environment-only,Biotic,Moderate,0.321,0.906,0.474,833
+Environment-only,Biotic,Severe,0.000,0.000,0.000,624
+Environment-only,Abiotic,-,-,-,-,0
+Fusion,All unhealthy,Mild,0.885,0.895,0.890,1207
+Fusion,All unhealthy,Moderate,0.744,0.758,0.751,833
+Fusion,All unhealthy,Severe,0.872,0.832,0.852,624
+Fusion,Biotic,Mild,0.885,0.895,0.890,1207
+Fusion,Biotic,Moderate,0.744,0.758,0.751,833
+Fusion,Biotic,Severe,0.872,0.832,0.852,624
+Fusion,Abiotic,-,-,-,-,0
+Fusion (shuffled env),All unhealthy,Mild,0.886,0.895,0.890,1207
+Fusion (shuffled env),All unhealthy,Moderate,0.745,0.754,0.749,833
+Fusion (shuffled env),All unhealthy,Severe,0.865,0.835,0.850,624
+Fusion (shuffled env),Biotic,Mild,0.886,0.895,0.890,1207
+Fusion (shuffled env),Biotic,Moderate,0.745,0.754,0.749,833
+Fusion (shuffled env),Biotic,Severe,0.865,0.835,0.850,624
+Fusion (shuffled env),Abiotic,-,-,-,-,0

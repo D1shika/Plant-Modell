@@ -1,0 +1,9 @@
+variant,feature,d_health_acc_mean,d_cause_acc_mean,d_condition_acc_mean,d_health_acc_sd,d_cause_acc_sd,d_condition_acc_sd
+fusion,temperature,-0.0002,0.0,0.0006,0.0001,0.0,0.0002
+fusion,rainfall,0.0,0.0,0.0001,0.0,0.0,0.0002
+fusion,humidity,0.0,0.0,-0.0002,0.0001,0.0,0.0001
+fusion,soil_moisture,0.0,0.0,0.0002,0.0001,0.0,0.0004
+fusion_shuffled_env,temperature,0.0,0.0,-0.0,0.0,0.0,0.0002
+fusion_shuffled_env,rainfall,0.0,0.0,0.0007,0.0,0.0,0.0003
+fusion_shuffled_env,humidity,0.0,0.0,0.0005,0.0,0.0,0.0002
+fusion_shuffled_env,soil_moisture,0.0,0.0,0.0003,0.0,0.0,0.0002

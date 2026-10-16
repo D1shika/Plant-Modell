@@ -1,0 +1,8 @@
+﻿resumed from epoch 7
+  ep7 step 0/1039 loss 1.7005
+  ep7 step 200/1039 loss 1.8323
+  ep7 step 400/1039 loss 1.8292
+  ep7 step 600/1039 loss 1.8247
+  ep7 step 800/1039 loss 1.8238
+  ep7 step 1000/1039 loss 1.8210
+train image_seed3 epoch 7: train_loss 1.8214 val_loss 1.7916 health_acc 0.9948 cause_acc 1.0000(n=2714) cond_acc 0.9734 lr 1.14e-05 14.5 min checkpoint=last patience 1/3

@@ -1,0 +1,42 @@
+﻿images=23559  groups after id-merge=10691  exact-duplicate pairs=11  phash near-dup pairs (<= 6)=506  final groups=10321
+ASSERT OK: no path and no group id appears in more than one split
+
+split sizes: {'train': np.int64(16635), 'test': np.int64(3464), 'val': np.int64(3460)} {'train': 0.706, 'test': 0.147, 'val': 0.147}
+
+per-source:
+ split         test  train   val
+source                         
+PlantDoc       206   1061   211
+PlantVillage  3258  15574  3249
+
+per-condition:
+ split                            test  train  val
+condition                                        
+Apple___Apple_scab                108    507  108
+Apple___Black_rot                  99    434   88
+Apple___Cedar_apple_rust           54    255   55
+Apple___healthy                   150    700  150
+Cherry___Powdery_mildew           137    719  144
+Cherry___healthy                   77    763   71
+Grape___Black_rot                 150    700  150
+Grape___Esca                      150    700  150
+Grape___Leaf_blight               151    693  156
+Grape___healthy                    74    344   74
+Orange___Haunglongbing            150    700  150
+Peach___Bacterial_spot            150    700  150
+Peach___healthy                    69    333   70
+Pepper_bell___Bacterial_spot      151    698  148
+Pepper_bell___healthy             149    703  148
+Strawberry___Leaf_scorch          150    700  150
+Strawberry___healthy               82    387   83
+Tomato___Bacterial_spot           150    700  150
+Tomato___Early_blight             150    700  150
+Tomato___Late_blight              150    700  150
+Tomato___Leaf_Mold                150    700  150
+Tomato___Mosaic_virus              63    299   65
+Tomato___Septoria_leaf_spot       150    700  150
+Tomato___Spider_mites             150    700  150
+Tomato___Target_Spot              150    700  150
+Tomato___Yellow_Leaf_Curl_Virus   150    700  150
+Tomato___healthy                  150    700  150
+wrote C:\Plant model\fruit_health\data\processed\splits.csv

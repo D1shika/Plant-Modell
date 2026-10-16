@@ -1,0 +1,2 @@
+image,status,crop,crop_conf,health,health_conf,cause,cause_conf,condition,condition_conf,severity,severity_conf,p_gt_mild,p_gt_moderate,low_confidence_heads,temp,rainfall,humidity,soil_moisture,env_source,cam_path,variant
+C:\Users\dishi\AppData\Local\Temp\claude\C--Plant-model-fruit-health\2136717c-553a-4c4a-bb70-32de68036e7e\scratchpad\pred_tests\purple.png,ok,Orange,0.2014,Unhealthy,0.5215,Biotic,nan,Tomato___Yellow_Leaf_Curl_Virus,0.0721,Mild,0.5449,0.4551,0.6844,crop;condition,23.376,65.146,62.736,45.13,training_average,,image

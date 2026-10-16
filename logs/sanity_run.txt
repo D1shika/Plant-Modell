@@ -1,0 +1,56 @@
+﻿{'features': 'blurred 16x16', 'target': 'cause', 'classifier': 'HistGB', 'n_train': 16635, 'n_test': 3464, 'accuracy': 0.89, 'balanced_acc': 0.788, 'majority_baseline': 0.783, 'classes': 2}
+{'features': 'blurred 16x16', 'target': 'source', 'classifier': 'HistGB', 'n_train': 16635, 'n_test': 3464, 'accuracy': 0.989, 'balanced_acc': 0.924, 'majority_baseline': 0.941, 'classes': 2}
+{'features': 'blurred 16x16', 'target': 'condition', 'classifier': 'LogReg', 'n_train': 16635, 'n_test': 3464, 'accuracy': 0.63, 'balanced_acc': 0.621, 'majority_baseline': 0.022, 'classes': 27}
+{'features': 'border strips', 'target': 'cause', 'classifier': 'HistGB', 'n_train': 16635, 'n_test': 3464, 'accuracy': 0.863, 'balanced_acc': 0.722, 'majority_baseline': 0.783, 'classes': 2}
+{'features': 'border strips', 'target': 'source', 'classifier': 'HistGB', 'n_train': 16635, 'n_test': 3464, 'accuracy': 0.991, 'balanced_acc': 0.943, 'majority_baseline': 0.941, 'classes': 2}
+.\.venv\Scripts\python.exe : C:\Plant 
+model\fruit_health\.venv\Lib\site-packages\sklearn\linear_model\_logistic.py:599: ConvergenceWarning: lbfgs failed to 
+converge after 300 iteration(s) (status=1):
+At line:1 char:387
++ ... StartNew(); .\.venv\Scripts\python.exe -I src\sanity.py *> logs\sanit ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Plant model\...(s) (status=1)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=300).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+{'features': 'border strips', 'target': 'condition', 'classifier': 'LogReg', 'n_train': 16635, 'n_test': 3464, 'accuracy': 0.502, 'balanced_acc': 0.49, 'majority_baseline': 0.022, 'classes': 27}
+
+WARNING: Cause accuracy may reflect dataset background or source differences rather than leaf symptoms.
+# Background/source probe (Part 12.1)
+
+Inputs are ONLY blurred 16x16 images or border strips; train/test are the leakage-resistant group splits. 'cause' = None vs Biotic (no abiotic data exist).
+
+| features | target | classifier | classes | n_train | n_test | accuracy | balanced acc | majority baseline |
+|---|---|---|---|---|---|---|---|---|
+| blurred 16x16 | cause | HistGB | 2 | 16635 | 3464 | 0.89 | 0.788 | 0.783 |
+| blurred 16x16 | source | HistGB | 2 | 16635 | 3464 | 0.989 | 0.924 | 0.941 |
+| blurred 16x16 | condition | LogReg | 27 | 16635 | 3464 | 0.63 | 0.621 | 0.022 |
+| border strips | cause | HistGB | 2 | 16635 | 3464 | 0.863 | 0.722 | 0.783 |
+| border strips | source | HistGB | 2 | 16635 | 3464 | 0.991 | 0.943 | 0.941 |
+| border strips | condition | LogReg | 27 | 16635 | 3464 | 0.502 | 0.49 | 0.022 |
+
+**WARNING: Cause accuracy may reflect dataset background or source differences rather than leaf symptoms.**
+
+Source dataset is highly identifiable from background/border pixels alone (accuracy >= 0.90): lab vs field differences are partly a background effect.
+
+Condition (27 classes) from background-only inputs: blurred 16x16: acc 0.63 (balanced 0.621, majority 0.022), border strips: acc 0.502 (balanced 0.49, majority 0.022)
+
+# Cross-split near-duplicate check (test images vs nearest TRAIN image, pHash of the 256 px cache)
+
+| Hamming <= | test images | share |
+|---|---|---|
+| 4 | 0 | 0.0000 |
+| 6 | 0 | 0.0000 |
+| 8 | 297 | 0.0857 |
+| 10 | 1165 | 0.3363 |
+| 12 | 2287 | 0.6602 |
+
+The 25 closest cross-split pairs are in crosssplit_nearest_pairs.csv for visual inspection.
+Exact duplicates (MD5) across splits: 0 hash(es) appear in more than one split; 11 duplicate files in total.

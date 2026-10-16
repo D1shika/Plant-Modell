@@ -1,0 +1,6 @@
+{
+  "variant": "fusion_shuffled_env",
+  "epochs_run": 8,
+  "best_val_loss": 1.7982364532050736,
+  "finished": "2026-10-16T10:58:51"
+}

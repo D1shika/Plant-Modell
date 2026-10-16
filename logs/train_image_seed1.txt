@@ -1,0 +1,56 @@
+﻿  ep0 step 0/1039 loss 7.4981
+  ep0 step 200/1039 loss 4.3127
+  ep0 step 400/1039 loss 3.5201
+  ep0 step 600/1039 loss 3.1666
+  ep0 step 800/1039 loss 2.9586
+  ep0 step 1000/1039 loss 2.8180
+train 2904.961032152176 epoch 0: train_loss 2.7959 val_loss 2.0454 health_acc 0.9832 cause_acc 1.0000(n=2714) cond_acc 0.9425 lr 3.00e-04 2.1 min checkpoint=last+best patience 0/3
+  ep1 step 0/1039 loss 2.1077
+  ep1 step 200/1039 loss 2.1815
+  ep1 step 400/1039 loss 2.1674
+  ep1 step 600/1039 loss 2.1548
+  ep1 step 800/1039 loss 2.1474
+  ep1 step 1000/1039 loss 2.1393
+train 2220.398627281189 epoch 1: train_loss 2.1371 val_loss 1.9193 health_acc 0.9919 cause_acc 1.0000(n=2714) cond_acc 0.9604 lr 2.89e-04 1.3 min checkpoint=last+best patience 0/3
+  ep2 step 0/1039 loss 1.9020
+  ep2 step 200/1039 loss 2.0198
+  ep2 step 400/1039 loss 2.0314
+  ep2 step 600/1039 loss 2.0310
+  ep2 step 800/1039 loss 2.0295
+  ep2 step 1000/1039 loss 2.0276
+train 2107.251453638077 epoch 2: train_loss 2.0282 val_loss 1.8863 health_acc 0.9922 cause_acc 1.0000(n=2714) cond_acc 0.9702 lr 2.56e-04 1.2 min checkpoint=last+best patience 0/3
+  ep3 step 0/1039 loss 2.2773
+  ep3 step 200/1039 loss 1.9514
+  ep3 step 400/1039 loss 1.9499
+  ep3 step 600/1039 loss 1.9538
+  ep3 step 800/1039 loss 1.9502
+  ep3 step 1000/1039 loss 1.9482
+train 2023.5866050720215 epoch 3: train_loss 1.9476 val_loss 1.8336 health_acc 0.9962 cause_acc 1.0000(n=2714) cond_acc 0.9717 lr 2.07e-04 1.3 min checkpoint=last+best patience 0/3
+  ep4 step 0/1039 loss 1.8445
+  ep4 step 200/1039 loss 1.9166
+  ep4 step 400/1039 loss 1.9062
+  ep4 step 600/1039 loss 1.8998
+  ep4 step 800/1039 loss 1.8948
+  ep4 step 1000/1039 loss 1.8931
+train 1966.875995874405 epoch 4: train_loss 1.8930 val_loss 1.8148 health_acc 0.9951 cause_acc 1.0000(n=2714) cond_acc 0.9705 lr 1.50e-04 1.2 min checkpoint=last+best patience 0/3
+  ep5 step 0/1039 loss 1.7733
+  ep5 step 200/1039 loss 1.8602
+  ep5 step 400/1039 loss 1.8672
+  ep5 step 600/1039 loss 1.8630
+  ep5 step 800/1039 loss 1.8590
+  ep5 step 1000/1039 loss 1.8565
+train 1929.7010712623596 epoch 5: train_loss 1.8573 val_loss 1.8015 health_acc 0.9942 cause_acc 1.0000(n=2714) cond_acc 0.9746 lr 9.26e-05 1.2 min checkpoint=last+best patience 0/3
+  ep6 step 0/1039 loss 1.7641
+  ep6 step 200/1039 loss 1.8165
+  ep6 step 400/1039 loss 1.8318
+  ep6 step 600/1039 loss 1.8340
+  ep6 step 800/1039 loss 1.8320
+  ep6 step 1000/1039 loss 1.8368
+train 1907.386033296585 epoch 6: train_loss 1.8358 val_loss 1.7981 health_acc 0.9942 cause_acc 1.0000(n=2714) cond_acc 0.9728 lr 4.39e-05 1.2 min checkpoint=last+best patience 0/3
+  ep7 step 0/1039 loss 1.9238
+  ep7 step 200/1039 loss 1.8116
+  ep7 step 400/1039 loss 1.8115
+  ep7 step 600/1039 loss 1.8134
+  ep7 step 800/1039 loss 1.8187
+  ep7 step 1000/1039 loss 1.8205
+train 1891.2797623872757 epoch 7: train_loss 1.8203 val_loss 1.7951 health_acc 0.9942 cause_acc 1.0000(n=2714) cond_acc 0.9743 lr 1.14e-05 1.2 min checkpoint=last+best patience 0/3

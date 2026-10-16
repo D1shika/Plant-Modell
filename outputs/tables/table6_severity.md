@@ -1,0 +1,13 @@
+### Table 6 - Severity precision/recall/F1 (Fusion; valid heuristic labels only)
+
+| Model | Scope | Class | Precision | Recall | F1 | Support |
+|---|---|---|---|---|---|---|
+| Fusion | All unhealthy | Mild | 0.885 | 0.895 | 0.890 | 1207 |
+| Fusion | All unhealthy | Moderate | 0.744 | 0.758 | 0.751 | 833 |
+| Fusion | All unhealthy | Severe | 0.872 | 0.832 | 0.852 | 624 |
+| Fusion | Biotic | Mild | 0.885 | 0.895 | 0.890 | 1207 |
+| Fusion | Biotic | Moderate | 0.744 | 0.758 | 0.751 | 833 |
+| Fusion | Biotic | Severe | 0.872 | 0.832 | 0.852 | 624 |
+| Fusion | Abiotic | - | - | - | - | 0 |
+
+Evaluated against HEURISTIC damage-fraction labels (Mild <0.10, Moderate 0.10-0.30, Severe >0.30); this does not establish real-world severity accuracy. Abiotic: no examples (-). All-models version: table6_severity_all_models.csv.

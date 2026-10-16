@@ -1,0 +1,6 @@
+{
+  "variant": "env",
+  "epochs_run": 8,
+  "best_val_loss": 6.002684873178465,
+  "finished": "2026-10-16T09:58:10"
+}

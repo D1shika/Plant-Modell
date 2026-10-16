@@ -1,0 +1,131 @@
+﻿TEST split only: 3464 images, 1557 groups; device cuda
+image: predictions collected (best epoch 7)
+env: predictions collected (best epoch 6)
+fusion: predictions collected (best epoch 6)
+fusion_shuffled_env: predictions collected (best epoch 6)
+
+### Table 3 - Modality ablation (test split; 95% group-bootstrap CI)
+
+| Model | Crop accuracy | Health accuracy | Cause accuracy | Condition accuracy | Severity macro-F1 |
+|---|---|---|---|---|---|
+| Image-only | 0.990 [0.986, 0.993] n=3464 | 0.995 [0.993, 0.997] n=3464 | 1.000 [1.000, 1.000] n=2713 | 0.967 [0.960, 0.973] n=3464 | 0.825 [0.805, 0.843] n=2664 |
+| Environment-only | 0.456 [0.430, 0.485] n=3464 | 0.783 [0.752, 0.811] n=3464 | 1.000 [1.000, 1.000] n=2713 | 0.088 [0.075, 0.101] n=3464 | 0.236 [0.217, 0.254] n=2664 |
+| Fusion | 0.990 [0.986, 0.993] n=3464 | 0.997 [0.994, 0.998] n=3464 | 1.000 [1.000, 1.000] n=2713 | 0.969 [0.961, 0.975] n=3464 | 0.831 [0.811, 0.848] n=2664 |
+| Fusion (shuffled env) | 0.990 [0.986, 0.993] n=3464 | 0.997 [0.994, 0.999] n=3464 | 1.000 [1.000, 1.000] n=2713 | 0.969 [0.962, 0.975] n=3464 | 0.830 [0.810, 0.848] n=2664 |
+| Majority-class baseline | 0.408 n=3464 | 0.783 n=3464 | 1.000 n=2713 | 0.022 n=3464 | 0.208 n=2664 |
+
+Cause accuracy is trivial: only Biotic labels exist (no abiotic data). Environment values are SIMULATED. Severity labels are heuristic. The shuffled-env row is the control: compare it with Fusion.
+
+
+### Table 4 - Lab vs field (Fusion model, test split)
+
+| Comparison | Lab (PlantVillage) | Field (PlantDoc) | Field - Lab |
+|---|---|---|---|
+| Health accuracy (all samples) | 0.999 [0.998, 1.000] n=3258 | 0.951 [0.922, 0.980] n=206 | -4.8 pp [-7.7, -1.9] |
+| Cause accuracy (unhealthy; trivial) | 1.000 [1.000, 1.000] n=2591 | 1.000 [1.000, 1.000] n=122 | +0.0 pp [+0.0, +0.0] |
+| Condition accuracy (all samples) | 0.990 [0.986, 0.995] n=3258 | 0.631 [0.565, 0.692] n=206 | -35.9 pp [-42.5, -29.8] |
+| Like-for-like biotic: health accuracy | 1.000 [1.000, 1.000] n=1303 | 0.951 [0.910, 0.984] n=122 | -4.9 pp [-9.0, -1.6] |
+| Like-for-like biotic: cause accuracy | 1.000 [1.000, 1.000] n=1303 | 1.000 [1.000, 1.000] n=122 | +0.0 pp [+0.0, +0.0] |
+| Like-for-like biotic: condition accuracy | 0.978 [0.966, 0.987] n=1303 | 0.541 [0.455, 0.631] n=122 | -43.7 pp [-52.0, -34.5] |
+
+Like-for-like biotic subset = unhealthy samples of conditions present in both sources' test sets (11): Apple___Apple_scab, Apple___Cedar_apple_rust, Grape___Black_rot, Tomato___Bacterial_spot, Tomato___Early_blight, Tomato___Late_blight, Tomato___Leaf_Mold, Tomato___Mosaic_virus, Tomato___Septoria_leaf_spot, Tomato___Spider_mites, Tomato___Yellow_Leaf_Curl_Virus. Differences are Field minus Lab in percentage points with independent group-bootstrap intervals. '-' = unavailable.
+
+
+Table 5 (Disease / N_Deficiency / NK_Deficiency): UNAVAILABLE - Required classes Disease / N_Deficiency / NK_Deficiency are NOT available: no abiotic (nutrient) data were obtained (OLID I is Kaggle-only). N and NK deficiency were not relabelled as anything else.
+
+### Table 5 (ALTERNATIVE, not equivalent) - Tomato Healthy vs Disease, health head (Fusion)
+
+| True \ Predicted | n_true | Healthy | Disease |
+|---|---|---|---|
+| Healthy | 150 | 149 | 1 |
+| Disease | 1263 | 5 | 1258 |
+
+
+### Table 5 (ALTERNATIVE) - Tomato per-condition confusion (Fusion)
+
+| True \ Predicted | n_true | Tomato___Bacterial_spot | Tomato___Early_blight | Tomato___Late_blight | Tomato___Leaf_Mold | Tomato___Mosaic_virus | Tomato___Septoria_leaf_spot | Tomato___Spider_mites | Tomato___Target_Spot | Tomato___Yellow_Leaf_Curl_Virus | Tomato___healthy | other_crop |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Tomato___Bacterial_spot | 150 | 128 | 1 | 5 | 0 | 0 | 7 | 0 | 3 | 2 | 0 | 4 |
+| Tomato___Early_blight | 150 | 3 | 134 | 5 | 0 | 0 | 3 | 0 | 2 | 0 | 1 | 2 |
+| Tomato___Late_blight | 150 | 0 | 2 | 144 | 3 | 0 | 0 | 0 | 1 | 0 | 0 | 0 |
+| Tomato___Leaf_Mold | 150 | 1 | 0 | 1 | 146 | 0 | 1 | 0 | 0 | 0 | 0 | 1 |
+| Tomato___Mosaic_virus | 63 | 0 | 0 | 0 | 2 | 58 | 0 | 0 | 0 | 2 | 0 | 1 |
+| Tomato___Septoria_leaf_spot | 150 | 3 | 0 | 0 | 0 | 1 | 142 | 0 | 0 | 1 | 0 | 3 |
+| Tomato___Spider_mites | 150 | 0 | 0 | 0 | 0 | 0 | 0 | 148 | 0 | 2 | 0 | 0 |
+| Tomato___Target_Spot | 150 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 150 | 0 | 0 | 0 |
+| Tomato___Yellow_Leaf_Curl_Virus | 150 | 5 | 0 | 0 | 1 | 3 | 0 | 1 | 0 | 139 | 0 | 1 |
+| Tomato___healthy | 150 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 147 | 1 |
+
+
+### Table 6 - Severity precision/recall/F1 (Fusion; valid heuristic labels only)
+
+| Model | Scope | Class | Precision | Recall | F1 | Support |
+|---|---|---|---|---|---|---|
+| Fusion | All unhealthy | Mild | 0.885 | 0.895 | 0.890 | 1207 |
+| Fusion | All unhealthy | Moderate | 0.744 | 0.758 | 0.751 | 833 |
+| Fusion | All unhealthy | Severe | 0.872 | 0.832 | 0.852 | 624 |
+| Fusion | Biotic | Mild | 0.885 | 0.895 | 0.890 | 1207 |
+| Fusion | Biotic | Moderate | 0.744 | 0.758 | 0.751 | 833 |
+| Fusion | Biotic | Severe | 0.872 | 0.832 | 0.852 | 624 |
+| Fusion | Abiotic | - | - | - | - | 0 |
+
+Evaluated against HEURISTIC damage-fraction labels (Mild <0.10, Moderate 0.10-0.30, Severe >0.30); this does not establish real-world severity accuracy. Abiotic: no examples (-). All-models version: table6_severity_all_models.csv.
+
+
+### Per-source and per-crop metrics with sample counts (test split)
+
+| model | group_type | group | n | crop_acc | crop_n | health_acc | health_n | condition_acc | condition_n | cause_acc | cause_n |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Image-only | source | PlantDoc | 206 | 0.835 | 206 | 0.942 | 206 | 0.617 | 206 | 1.000 | 122 |
+| Image-only | source | PlantVillage | 3258 | 1.000 | 3258 | 0.999 | 3258 | 0.989 | 3258 | 1.000 | 2591 |
+| Image-only | crop | Apple | 411 | 0.985 | 411 | 0.995 | 411 | 0.978 | 411 | 1.000 | 261 |
+| Image-only | crop | Cherry | 214 | 0.972 | 214 | 1.000 | 214 | 0.972 | 214 | 1.000 | 137 |
+| Image-only | crop | Grape | 525 | 0.992 | 525 | 1.000 | 525 | 0.990 | 525 | 1.000 | 451 |
+| Image-only | crop | Orange | 150 | 1.000 | 150 | 1.000 | 150 | 1.000 | 150 | 1.000 | 150 |
+| Image-only | crop | Peach | 219 | 0.986 | 219 | 0.995 | 219 | 0.986 | 219 | 1.000 | 150 |
+| Image-only | crop | Pepper_bell | 300 | 0.980 | 300 | 0.987 | 300 | 0.973 | 300 | 1.000 | 151 |
+| Image-only | crop | Strawberry | 232 | 0.996 | 232 | 0.996 | 232 | 0.996 | 232 | 1.000 | 150 |
+| Image-only | crop | Tomato | 1413 | 0.994 | 1413 | 0.994 | 1413 | 0.942 | 1413 | 1.000 | 1263 |
+| Environment-only | source | PlantDoc | 206 | 0.500 | 206 | 0.592 | 206 | 0.049 | 206 | 1.000 | 122 |
+| Environment-only | source | PlantVillage | 3258 | 0.453 | 3258 | 0.795 | 3258 | 0.091 | 3258 | 1.000 | 2591 |
+| Environment-only | crop | Apple | 411 | 0.404 | 411 | 0.635 | 411 | 0.010 | 411 | 1.000 | 261 |
+| Environment-only | crop | Cherry | 214 | 0.070 | 214 | 0.640 | 214 | 0.252 | 214 | 1.000 | 137 |
+| Environment-only | crop | Grape | 525 | 0.297 | 525 | 0.859 | 525 | 0.154 | 525 | 1.000 | 451 |
+| Environment-only | crop | Orange | 150 | 0.000 | 150 | 1.000 | 150 | 0.573 | 150 | 1.000 | 150 |
+| Environment-only | crop | Peach | 219 | 0.000 | 219 | 0.685 | 219 | 0.032 | 219 | 1.000 | 150 |
+| Environment-only | crop | Pepper_bell | 300 | 0.000 | 300 | 0.503 | 300 | 0.030 | 300 | 1.000 | 151 |
+| Environment-only | crop | Strawberry | 232 | 0.000 | 232 | 0.647 | 232 | 0.125 | 232 | 1.000 | 150 |
+| Environment-only | crop | Tomato | 1413 | 0.878 | 1413 | 0.894 | 1413 | 0.025 | 1413 | 1.000 | 1263 |
+| Fusion | source | PlantDoc | 206 | 0.835 | 206 | 0.951 | 206 | 0.631 | 206 | 1.000 | 122 |
+| Fusion | source | PlantVillage | 3258 | 1.000 | 3258 | 0.999 | 3258 | 0.990 | 3258 | 1.000 | 2591 |
+| Fusion | crop | Apple | 411 | 0.981 | 411 | 0.998 | 411 | 0.976 | 411 | 1.000 | 261 |
+| Fusion | crop | Cherry | 214 | 0.977 | 214 | 1.000 | 214 | 0.972 | 214 | 1.000 | 137 |
+| Fusion | crop | Grape | 525 | 0.994 | 525 | 1.000 | 525 | 0.989 | 525 | 1.000 | 451 |
+| Fusion | crop | Orange | 150 | 1.000 | 150 | 1.000 | 150 | 1.000 | 150 | 1.000 | 150 |
+| Fusion | crop | Peach | 219 | 0.995 | 219 | 0.995 | 219 | 0.995 | 219 | 1.000 | 150 |
+| Fusion | crop | Pepper_bell | 300 | 0.983 | 300 | 0.990 | 300 | 0.977 | 300 | 1.000 | 151 |
+| Fusion | crop | Strawberry | 232 | 0.996 | 232 | 0.996 | 232 | 0.996 | 232 | 1.000 | 150 |
+| Fusion | crop | Tomato | 1413 | 0.992 | 1413 | 0.996 | 1413 | 0.946 | 1413 | 1.000 | 1263 |
+| Fusion (shuffled env) | source | PlantDoc | 206 | 0.830 | 206 | 0.956 | 206 | 0.636 | 206 | 1.000 | 122 |
+| Fusion (shuffled env) | source | PlantVillage | 3258 | 1.000 | 3258 | 0.999 | 3258 | 0.990 | 3258 | 1.000 | 2591 |
+| Fusion (shuffled env) | crop | Apple | 411 | 0.983 | 411 | 0.998 | 411 | 0.973 | 411 | 1.000 | 261 |
+| Fusion (shuffled env) | crop | Cherry | 214 | 0.977 | 214 | 1.000 | 214 | 0.977 | 214 | 1.000 | 137 |
+| Fusion (shuffled env) | crop | Grape | 525 | 0.992 | 525 | 1.000 | 525 | 0.989 | 525 | 1.000 | 451 |
+| Fusion (shuffled env) | crop | Orange | 150 | 1.000 | 150 | 1.000 | 150 | 1.000 | 150 | 1.000 | 150 |
+| Fusion (shuffled env) | crop | Peach | 219 | 0.995 | 219 | 0.995 | 219 | 0.995 | 219 | 1.000 | 150 |
+| Fusion (shuffled env) | crop | Pepper_bell | 300 | 0.980 | 300 | 0.990 | 300 | 0.977 | 300 | 1.000 | 151 |
+| Fusion (shuffled env) | crop | Strawberry | 232 | 0.996 | 232 | 0.996 | 232 | 0.996 | 232 | 1.000 | 150 |
+| Fusion (shuffled env) | crop | Tomato | 1413 | 0.992 | 1413 | 0.996 | 1413 | 0.946 | 1413 | 1.000 | 1263 |
+
+Field cause accuracy: 1.000 on n=122 | health 0.951 on n=206 | condition 0.631 on n=206
+Lab cause accuracy: 1.000 on n=2591 | health 0.999 on n=3258 | condition 0.990 on n=3258
+
+# Sanity flags (evaluate.py)
+
+- Image-only cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+- Environment-only cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+- Fusion cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+- Fusion (shuffled env) cause = 1.000 on n=2713 (cause is trivial: only Biotic labels exist)
+- Image-only condition: lab 0.989 vs field 0.617 (gap 37.3 pp > 10 pp)
+- Fusion condition: lab 0.990 vs field 0.631 (gap 35.9 pp > 10 pp)
+- Fusion (shuffled env) condition: lab 0.990 vs field 0.636 (gap 35.4 pp > 10 pp)

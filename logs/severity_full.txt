@@ -1,0 +1,24 @@
+﻿  2000/18132
+  4000/18132
+  6000/18132
+  8000/18132
+  10000/18132
+  12000/18132
+  14000/18132
+  16000/18132
+  18000/18132
+unhealthy images: 18132 | severity_valid: 17709
+severity counts (all): {'Mild': 8023, 'Severe': 4534, 'Moderate': 5489, 'Invalid': 86}
+severity counts (valid only): {'Mild': 7904, 'Severe': 4446, 'Moderate': 5359} {'Mild': 0.446, 'Severe': 0.251, 'Moderate': 0.303}
+mask quality: {'ok': 17709, 'hsv_fallback': 337, 'mask_failed': 86}
+by source/mask_flag:
+ mask_flag     hsv_fallback  mask_failed     ok
+source                                        
+PlantDoc               284           32    613
+PlantVillage            53           54  17096
+by source/severity (valid only):
+ severity      Mild  Moderate  Severe
+source                              
+PlantDoc       206       170     237
+PlantVillage  7698      5189    4209
+wrote 24 debug images to C:\Plant model\fruit_health\outputs\severity_debug

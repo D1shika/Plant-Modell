@@ -1,0 +1,6 @@
+{
+  "variant": "fusion",
+  "epochs_run": 8,
+  "best_val_loss": 1.7984211565157688,
+  "finished": "2026-10-16T10:23:30"
+}

@@ -1,0 +1,23 @@
+{
+  "variant": "image",
+  "epochs": 8,
+  "batch": 16,
+  "workers": 1,
+  "img_size": 224,
+  "amp": true,
+  "device": "cuda",
+  "lr_head": 0.0003,
+  "lr_backbone": 0.0001,
+  "wd": 0.0001,
+  "label_smoothing": 0.1,
+  "grad_clip": 1.0,
+  "patience": 3,
+  "seed": 3,
+  "run": "image_seed3",
+  "split_seed": 42,
+  "n_train": 16635,
+  "n_val": 3460,
+  "condition_class_weights": false,
+  "max_condition_imbalance_ratio": 2.99,
+  "n_conditions": 27
+}

@@ -1,0 +1,56 @@
+﻿  ep0 step 0/1039 loss 7.6096
+  ep0 step 200/1039 loss 4.2890
+  ep0 step 400/1039 loss 3.5081
+  ep0 step 600/1039 loss 3.1504
+  ep0 step 800/1039 loss 2.9525
+  ep0 step 1000/1039 loss 2.8190
+train fusion_shuffled_env epoch 0: train_loss 2.7984 val_loss 2.0294 health_acc 0.9928 cause_acc 1.0000(n=2714) cond_acc 0.9512 lr 3.00e-04 5.3 min checkpoint=last+best patience 0/3
+  ep1 step 0/1039 loss 2.0199
+  ep1 step 200/1039 loss 2.1827
+  ep1 step 400/1039 loss 2.1754
+  ep1 step 600/1039 loss 2.1727
+  ep1 step 800/1039 loss 2.1554
+  ep1 step 1000/1039 loss 2.1443
+train fusion_shuffled_env epoch 1: train_loss 2.1428 val_loss 1.8925 health_acc 0.9965 cause_acc 1.0000(n=2714) cond_acc 0.9653 lr 2.89e-04 4.3 min checkpoint=last+best patience 0/3
+  ep2 step 0/1039 loss 1.9740
+  ep2 step 200/1039 loss 2.0204
+  ep2 step 400/1039 loss 2.0232
+  ep2 step 600/1039 loss 2.0207
+  ep2 step 800/1039 loss 2.0183
+  ep2 step 1000/1039 loss 2.0126
+train fusion_shuffled_env epoch 2: train_loss 2.0128 val_loss 1.8730 health_acc 0.9936 cause_acc 1.0000(n=2714) cond_acc 0.9659 lr 2.56e-04 3.9 min checkpoint=last+best patience 0/3
+  ep3 step 0/1039 loss 1.9281
+  ep3 step 200/1039 loss 1.9519
+  ep3 step 400/1039 loss 1.9610
+  ep3 step 600/1039 loss 1.9622
+  ep3 step 800/1039 loss 1.9560
+  ep3 step 1000/1039 loss 1.9508
+train fusion_shuffled_env epoch 3: train_loss 1.9501 val_loss 1.8615 health_acc 0.9957 cause_acc 1.0000(n=2714) cond_acc 0.9676 lr 2.07e-04 3.6 min checkpoint=last+best patience 0/3
+  ep4 step 0/1039 loss 1.9805
+  ep4 step 200/1039 loss 1.9045
+  ep4 step 400/1039 loss 1.9127
+  ep4 step 600/1039 loss 1.9054
+  ep4 step 800/1039 loss 1.9027
+  ep4 step 1000/1039 loss 1.9008
+train fusion_shuffled_env epoch 4: train_loss 1.9003 val_loss 1.8054 health_acc 0.9965 cause_acc 1.0000(n=2714) cond_acc 0.9740 lr 1.50e-04 3.9 min checkpoint=last+best patience 0/3
+  ep5 step 0/1039 loss 2.1106
+  ep5 step 200/1039 loss 1.8975
+  ep5 step 400/1039 loss 1.8795
+  ep5 step 600/1039 loss 1.8672
+  ep5 step 800/1039 loss 1.8655
+  ep5 step 1000/1039 loss 1.8671
+train fusion_shuffled_env epoch 5: train_loss 1.8667 val_loss 1.8165 health_acc 0.9934 cause_acc 1.0000(n=2714) cond_acc 0.9699 lr 9.26e-05 5.2 min checkpoint=last patience 1/3
+  ep6 step 0/1039 loss 1.7543
+  ep6 step 200/1039 loss 1.8390
+  ep6 step 400/1039 loss 1.8316
+  ep6 step 600/1039 loss 1.8254
+  ep6 step 800/1039 loss 1.8284
+  ep6 step 1000/1039 loss 1.8299
+train fusion_shuffled_env epoch 6: train_loss 1.8291 val_loss 1.7982 health_acc 0.9948 cause_acc 1.0000(n=2714) cond_acc 0.9723 lr 4.39e-05 4.2 min checkpoint=last+best patience 0/3
+  ep7 step 0/1039 loss 1.9018
+  ep7 step 200/1039 loss 1.8121
+  ep7 step 400/1039 loss 1.8320
+  ep7 step 600/1039 loss 1.8262
+  ep7 step 800/1039 loss 1.8226
+  ep7 step 1000/1039 loss 1.8242
+train fusion_shuffled_env epoch 7: train_loss 1.8238 val_loss 1.7996 health_acc 0.9945 cause_acc 1.0000(n=2714) cond_acc 0.9720 lr 1.14e-05 4.4 min checkpoint=last patience 1/3

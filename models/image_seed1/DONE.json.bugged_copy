@@ -1,0 +1,8 @@
+{
+  "variant": "image",
+  "run": 1891.2797623872757,
+  "seed": 1,
+  "epochs_run": 8,
+  "best_val_loss": 1.7951478717523977,
+  "finished": "2026-10-16T12:02:00"
+}

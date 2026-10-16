@@ -1,0 +1,23 @@
+{
+  "features": [
+    "temperature",
+    "rainfall",
+    "humidity",
+    "soil_moisture"
+  ],
+  "mean": [
+    23.37560056362483,
+    65.14559250402046,
+    62.73589241159774,
+    45.129586692821015
+  ],
+  "std": [
+    6.8833626911429215,
+    38.92829365366603,
+    14.50362695890797,
+    12.645829874454533
+  ],
+  "fitted_on": "train split only",
+  "n_train": 16635,
+  "method": "simulated: crop baseline + Gaussian noise, seed=md5(relative path)[:8]; independent of condition/health/cause; NOT sensor data"
+}

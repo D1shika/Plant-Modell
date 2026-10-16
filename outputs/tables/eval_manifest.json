@@ -1,0 +1,19 @@
+{
+  "test_n": 3464,
+  "variants": {
+    "image": {
+      "epoch": 7
+    },
+    "env": {
+      "epoch": 6
+    },
+    "fusion": {
+      "epoch": 6
+    },
+    "fusion_shuffled_env": {
+      "epoch": 6
+    }
+  },
+  "bootstrap": 1000,
+  "seed": 42
+}

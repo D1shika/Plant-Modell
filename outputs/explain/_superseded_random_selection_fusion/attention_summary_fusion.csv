@@ -1,0 +1,8 @@
+head,source,status,n,edge_energy,edge_area,leaf_energy,leaf_area,damage_energy,damage_area
+condition,PlantDoc,wrong,23,0.213,0.354,0.366,0.216,0.192,0.133
+condition,PlantVillage,correct,40,0.15,0.354,0.579,0.338,0.168,0.099
+condition,PlantVillage,wrong,4,0.185,0.354,0.629,0.372,0.325,0.182
+health,PlantDoc,correct,1,0.116,0.354,,,,
+health,PlantDoc,wrong,9,0.246,0.354,0.323,0.243,0.09,0.105
+health,PlantVillage,correct,39,0.073,0.354,0.713,0.339,0.279,0.102
+health,PlantVillage,wrong,2,0.035,0.354,0.844,0.441,0.085,0.037

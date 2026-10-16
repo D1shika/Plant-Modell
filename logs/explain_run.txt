@@ -1,0 +1,36 @@
+﻿.\.venv\Scripts\python.exe : C:\Plant model\fruit_health\src\explain.py:129: UserWarning: The given NumPy array is not 
+writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in 
+undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a 
+tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at 
+C:\actions-runner\_work\pytorch\pytorch\torch\csrc\utils\tensor_numpy.cpp:219.)
+At line:1 char:1330
++ ... StartNew(); .\.venv\Scripts\python.exe -I src\explain.py --variant fu ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Plant model\...numpy.cpp:219.):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  y = {k: torch.from_numpy(np.asarray(v)).to(dev) for k, v in ds.y.items()}
+
+Grad-CAM: saved 118 overlays to C:\Plant model\fruit_health\outputs\explain\fusion
+     head       source  status  n  edge_energy  edge_area  leaf_energy  leaf_area  damage_energy  damage_area
+condition     PlantDoc   wrong 23        0.213      0.354        0.366      0.216          0.192        0.133
+condition PlantVillage correct 40        0.150      0.354        0.579      0.338          0.168        0.099
+condition PlantVillage   wrong  4        0.185      0.354        0.629      0.372          0.325        0.182
+   health     PlantDoc correct  1        0.116      0.354          NaN        NaN            NaN          NaN
+   health     PlantDoc   wrong  9        0.246      0.354        0.323      0.243          0.090        0.105
+   health PlantVillage correct 39        0.073      0.354        0.713      0.339          0.279        0.102
+   health PlantVillage   wrong  2        0.035      0.354        0.844      0.441          0.085        0.037
+
+fusion permutation importance:
+ variant       feature  d_health_acc_mean  d_cause_acc_mean  d_condition_acc_mean  d_health_acc_sd  d_cause_acc_sd  d_condition_acc_sd
+ fusion   temperature            -0.0002               0.0                0.0006           0.0001             0.0              0.0002
+ fusion      rainfall             0.0000               0.0                0.0001           0.0000             0.0              0.0002
+ fusion      humidity             0.0000               0.0               -0.0002           0.0001             0.0              0.0001
+ fusion soil_moisture             0.0000               0.0                0.0002           0.0001             0.0              0.0004
+
+fusion_shuffled_env permutation importance:
+             variant       feature  d_health_acc_mean  d_cause_acc_mean  d_condition_acc_mean  d_health_acc_sd  d_cause_acc_sd  d_condition_acc_sd
+fusion_shuffled_env   temperature                0.0               0.0               -0.0000              0.0             0.0              0.0002
+fusion_shuffled_env      rainfall                0.0               0.0                0.0007              0.0             0.0              0.0003
+fusion_shuffled_env      humidity                0.0               0.0                0.0005              0.0             0.0              0.0002
+fusion_shuffled_env soil_moisture                0.0               0.0                0.0003              0.0             0.0              0.0002
