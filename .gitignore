@@ -10,6 +10,8 @@ kaggle.json
 *.key
 *.pem
 .env
+.env.*
+.env.local
 
 # Data and large artifacts (never commit automatically)
 data/raw/
@@ -33,3 +35,4 @@ models/_smoke_test/
 # OS
 Thumbs.db
 desktop.ini
+.DS_Store
