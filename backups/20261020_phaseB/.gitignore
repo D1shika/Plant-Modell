@@ -1,0 +1,38 @@
+# Environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Credentials / secrets
+.kaggle/
+kaggle.json
+*.key
+*.pem
+.env
+.env.*
+.env.local
+
+# Data and large artifacts (never commit automatically)
+data/raw/
+data/processed/
+*.pt
+*.pth
+models/**/*.pt
+models/**/*.pth
+models/torch_cache/
+models/_smoke_test/
+*.zip
+*.tar
+*.tar.gz
+
+# Caches / temp
+.cache/
+*.tmp
+*.bak
+.ipynb_checkpoints/
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store

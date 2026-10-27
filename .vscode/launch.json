@@ -57,12 +57,13 @@
       "justMyCode": true
     },
     {
-      "name": "6 - Predict: photo open in the editor + environment values",
+      "name": "6 - EXPERIMENTAL fusion model: photo open in the editor + simulated environment values",
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/src/predict.py",
       "args": [
         "--image", "${file}",
+        "--variant", "fusion",
         "--temp", "${input:envTemp}",
         "--rainfall", "${input:envRain}",
         "--humidity", "${input:envHumidity}",

@@ -1,0 +1,19 @@
+2026-10-20T16:12Z PHASE B START (user approval cmsg ...5kN31JCVr28 with 10 conditions). Execution: Linux file sandbox (no torch); Windows .venv cannot run here.
+2026-10-20T16:12Z Hashes recorded: logs/repair/hashes_before_phaseB.txt (15 .pt, backbone .pth, models/*.json, data/processed/*.csv; 26 files).
+2026-10-20T16:12Z Backups: backups/20261020_phaseB/src/{predict.py,smoke_test.py}, .gitignore; both src files byte-identical to git HEAD (c14f0c1, the user's own commit made during Phase B; it touched no src file).
+2026-10-20T16:20Z NEW src/class_meta.py: explicit crop/healthy metadata for the 27 classes + validate().
+2026-10-20T16:20Z NEW src/reconcile.py: condition-derived crop/health with marginal confidences; raw heads kept; cause unavailable when <2 trained classes; ordinal projection; uncertainty flag with PROVISIONAL thresholds (0.5).
+2026-10-20T16:25Z EDIT src/predict.py: default --variant image; env flags only with fusion/env variants (EXPERIMENTAL notice); reconcile() on logits; new CSV columns (raw_*, head_disagreement, marginal_disagreement, uncertain, raw/projected severity); --out_dir for isolated runs; optional models/calibration/<variant>.json (validation-only) support.
+2026-10-20T16:25Z EDIT src/smoke_test.py: no longer rewrites models/label_maps.json; untrained test checkpoint goes to a temp folder instead of models/_smoke_test/.
+2026-10-20T16:28Z NEW src/calibrate.py (validation-only temperature scaling). NOT RUN: needs approval + venv (~1-3 min GPU over 3,460 val images).
+2026-10-20T16:35Z NEW tests/: check_hashes.py, test_reconcile.py, test_saved_predictions.py, test_venv_inference.py, run_tests.py.
+2026-10-20T16:40Z EDIT .vscode/launch.json (project and root copies; backups in backups/20261020_phaseB/vscode_*): entry 6 now passes --variant fusion and is labelled EXPERIMENTAL (it would otherwise fail under the new image-only default).
+2026-10-20T16:42Z SANDBOX RUN: check_hashes 26/26 identical; test_reconcile 32/32; test_saved_predictions 7/7; test_venv_inference SKIPPED (no torch); smoke_test NOT RUN.
+2026-10-20T16:42Z NOTE: the sandbox interpreter left src/__pycache__/{class_meta,reconcile}.cpython-310.pyc (git-ignored, harmless); deletion is not permitted from the sandbox.
+2026-10-20T16:42Z PHASE B CODE COMPLETE; awaiting venv test results. README / HOW_TO_RUN still describe fusion as the default -> Phase E. Phase C NOT started.
+2026-10-20T16:50Z PHASE C START (user message cmsg ...1YsyFgdAXavKpUgUCgKwfX). Isolated in experiments/severity_v2/ (did not exist before). No src, data, model or split file modified.
+2026-10-20T16:56Z NEW experiments/severity_v2/{severity_v2.py, run_pilot.py, test_severity_v2.py}. src/severity.py reused read-only.
+2026-10-20T16:57Z SANDBOX RUN (Linux, cv2 5.0.0, python -I -B): test_severity_v2 27/27; run_pilot 72 train images (seed 42) -> experiments/severity_v2/out/.
+2026-10-20T17:05Z SANDBOX RUN: check_hashes 26/26 identical. No new __pycache__ written.
+2026-10-20T17:10Z RESULT: NOT PROMISING. v2 recovers some white mildew but adds similar false damage on healthy leaves (desaturated tissue, glare, margin shadows). See experiments/severity_v2/REPORT.md. Also: v1 itself differs from stored labels on 8/59 images in this OpenCV build.
+2026-10-20T17:10Z PHASE C COMPLETE; stopped. Phase D NOT started. Awaiting user approval.

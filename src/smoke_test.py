@@ -1,6 +1,7 @@
 """Phase E smoke test: forward/backward, masked losses, ordinal loss, checkpoint round-trip, CPU/GPU."""
 import json
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -9,7 +10,7 @@ from torch.utils.data import DataLoader
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from config import BATCH_SIZE, LR_BACKBONE, LR_HEAD, MODELS, SEED, WEIGHT_DECAY  # noqa: E402
-from dataset import LeafDataset, build_table, save_label_maps  # noqa: E402
+from dataset import LeafDataset, build_table  # noqa: E402
 from log_util import log  # noqa: E402
 from model import (IGNORE, VARIANTS, FruitHealthNet, decode_severity, masked_ce, ordinal_loss,  # noqa: E402
                    total_loss)
@@ -44,7 +45,7 @@ check("ordinal decode [Mild,Moderate,Severe,Mild(inconsistent->Mild)]", dec.toli
 
 # ---- data
 df, maps = build_table()
-save_label_maps(maps)
+# label maps are NOT saved here: a test must not rewrite the production models/label_maps.json
 stats = json.load(open(MODELS / "env_stats.json"))
 n_cond = len(maps["condition"])
 tr = df[df["split"] == "train"].sample(16, random_state=SEED)
@@ -75,8 +76,8 @@ for v in VARIANTS:
 
 # ---- checkpoint round-trip (fusion)
 m = FruitHealthNet("fusion", n_cond, pretrained=True).eval()
-(MODELS / "_smoke_test").mkdir(exist_ok=True)  # untrained test checkpoint: kept away from the real models
-ck = MODELS / "_smoke_test" / "smoke_ckpt.pt"
+_tmp = tempfile.TemporaryDirectory()  # untrained test checkpoint: written to a temp folder, never into models/
+ck = Path(_tmp.name) / "smoke_ckpt.pt"
 torch.save({"model": m.state_dict(), "variant": "fusion", "n_conditions": n_cond, "label_maps": maps}, ck)
 m2 = FruitHealthNet("fusion", n_cond, pretrained=False).eval()
 m2.load_state_dict(torch.load(ck, map_location="cpu")["model"])

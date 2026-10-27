@@ -1,0 +1,73 @@
+stratum,path,condition,health,acquisition,source,split
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/2ab4a5c8-c899-4dc2-978a-606b63030047___FREC_Pwd.M 0457.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/36ac8741-4a25-4c69-9158-93ec279974fa___FREC_Pwd.M 4528.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/0c477c6e-29a6-44a1-8c99-6f19f864f73e___FREC_Pwd.M 5112.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/cda8f219-224d-4da2-a829-05384c1bb53a___FREC_Pwd.M 5012.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/443f2ed2-dacc-4f1b-8cfe-bfc2e4c3155d___FREC_Pwd.M 5157.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/cd8572da-75c4-4388-a20b-25c136aee122___FREC_Pwd.M 0476.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/17512756-a606-4ea5-9443-aae374a46e86___FREC_Pwd.M 0504.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/bfa2932f-7203-4a9c-99e7-bb0a4d887cd6___FREC_Pwd.M 4515.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/1ca9be51-dea4-4075-8907-e583f85254b2___FREC_Pwd.M 4850.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/da90c057-c7da-48f1-b709-c53ac530e44f___FREC_Pwd.M 4768.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/eda6b430-2afb-48fa-92c9-74b0f8fba167___FREC_Pwd.M 4508.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+white_mildew,data/raw/plantvillage/Cherry_(including_sour)___Powdery_mildew/226bc7bb-e0ba-4c98-b7f6-cef16129a3d8___FREC_Pwd.M 4883.JPG,Cherry___Powdery_mildew,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Orange___Haunglongbing_(Citrus_greening)/3a5bbf23-face-4e2e-bac0-e04acf1cec7a___CREC_HLB 4759.JPG,Orange___Haunglongbing,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Orange___Haunglongbing_(Citrus_greening)/ad272a1d-ee44-4552-9424-1128c17bed15___UF.Citrus_HLB_Lab 1111.JPG,Orange___Haunglongbing,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Orange___Haunglongbing_(Citrus_greening)/8a22a0a3-1858-432b-b2e8-e54a22d4efea___CREC_HLB 4173.JPG,Orange___Haunglongbing,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Orange___Haunglongbing_(Citrus_greening)/394234cd-ec53-471b-8271-162e29a8820a___CREC_HLB 6718.JPG,Orange___Haunglongbing,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Orange___Haunglongbing_(Citrus_greening)/6e6161f9-35ec-4d3a-878e-0d3e72ccefa4___UF.Citrus_HLB_Lab 9723.JPG,Orange___Haunglongbing,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Orange___Haunglongbing_(Citrus_greening)/4c46e7c8-6e97-472d-9cf5-1d9895b3fbee___UF.Citrus_HLB_Lab 1113.JPG,Orange___Haunglongbing,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Tomato___Tomato_Yellow_Leaf_Curl_Virus/1ead601d-c2c0-44a6-90cd-e20680ab559c___YLCV_GCREC 2612.JPG,Tomato___Yellow_Leaf_Curl_Virus,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Tomato___Tomato_Yellow_Leaf_Curl_Virus/75fbe8d1-9d11-4039-9973-ba2599641426___UF.GRC_YLCV_Lab 02548.JPG,Tomato___Yellow_Leaf_Curl_Virus,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Tomato___Tomato_Yellow_Leaf_Curl_Virus/ab4df6f2-5a4c-4e14-8742-9d1b11f621c7___YLCV_GCREC 5304.JPG,Tomato___Yellow_Leaf_Curl_Virus,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Tomato___Tomato_Yellow_Leaf_Curl_Virus/78db61dd-af41-4419-8b25-48ab84a8406a___YLCV_GCREC 5248.JPG,Tomato___Yellow_Leaf_Curl_Virus,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Tomato___Tomato_Yellow_Leaf_Curl_Virus/1b568289-2f14-4019-b028-3f02ffe3752b___YLCV_NREC 2254.JPG,Tomato___Yellow_Leaf_Curl_Virus,Unhealthy,lab,PlantVillage,train
+chlorosis,data/raw/plantvillage/Tomato___Tomato_Yellow_Leaf_Curl_Virus/837c2369-4f38-4c58-b1ed-fa83f96258ad___UF.GRC_YLCV_Lab 02439.JPG,Tomato___Yellow_Leaf_Curl_Virus,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Tomato___Early_blight/605e0af6-415f-4e25-8f0d-a8f36371732b___RS_Erly.B 7827.JPG,Tomato___Early_blight,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Tomato___Early_blight/54b09b2b-afe1-42ab-b889-7190495f1e16___RS_Erly.B 7684.JPG,Tomato___Early_blight,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Tomato___Early_blight/0bb52721-51a6-4343-8c54-de15cedf8e5c___RS_Erly.B 7572.JPG,Tomato___Early_blight,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Tomato___Early_blight/c8dd6713-727e-4811-b951-e70e44d0c483___RS_Erly.B 7817.JPG,Tomato___Early_blight,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Tomato___Early_blight/c78483c5-424f-4a5f-aab3-5b909b62a7e6___RS_Erly.B 7541.JPG,Tomato___Early_blight,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Tomato___Early_blight/0ba3d536-8732-4ea1-b3e1-a1be86e5dc6a___RS_Erly.B 9499.JPG,Tomato___Early_blight,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Grape___Black_rot/882ad038-3d79-491d-b9f4-dc3357e5b34e___FAM_B.Rot 0602.JPG,Grape___Black_rot,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Grape___Black_rot/22948851-070e-408a-8564-2832b005ef5a___FAM_B.Rot 3520.JPG,Grape___Black_rot,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Grape___Black_rot/c04be529-1202-4a0f-ae5c-eb4895fcd650___FAM_B.Rot 0627.JPG,Grape___Black_rot,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Grape___Black_rot/74f33f39-7265-4eb9-878a-74a3e1f56520___FAM_B.Rot 3081.JPG,Grape___Black_rot,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Grape___Black_rot/90ef5d0f-2546-415e-aef4-daf452fec1be___FAM_B.Rot 3387.JPG,Grape___Black_rot,Unhealthy,lab,PlantVillage,train
+necrosis,data/raw/plantvillage/Grape___Black_rot/fc12aaf6-c133-46fb-b08a-bf7dd5d619ac___FAM_B.Rot 0462.JPG,Grape___Black_rot,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Tomato___Septoria_leaf_spot/e0f14238-9a53-4371-ade6-3ad6adf0162f___Matt.S_CG 2872.JPG,Tomato___Septoria_leaf_spot,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Tomato___Septoria_leaf_spot/86726614-43a7-445c-a854-153e3830cbcc___Matt.S_CG 7686.JPG,Tomato___Septoria_leaf_spot,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Tomato___Septoria_leaf_spot/dd5b3796-c2c2-4277-ab0f-cfee6d0f661a___Matt.S_CG 7589.JPG,Tomato___Septoria_leaf_spot,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Tomato___Septoria_leaf_spot/9784efc5-3e57-4d12-9912-9a06cb6d56fb___Keller.St_CG 1863.JPG,Tomato___Septoria_leaf_spot,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Tomato___Septoria_leaf_spot/694af91d-fa2c-4bdd-a1b4-0ebacc3a2cca___Matt.S_CG 1588.JPG,Tomato___Septoria_leaf_spot,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Tomato___Septoria_leaf_spot/2e147de4-c279-492b-93ef-affbe2e3e6ea___Keller.St_CG 1770.JPG,Tomato___Septoria_leaf_spot,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Apple___Apple_scab/e8f5c962-6f40-443e-9913-5a43b5f2ef07___FREC_Scab 3191.JPG,Apple___Apple_scab,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Apple___Apple_scab/321c7135-853f-444d-9952-a893e660d966___FREC_Scab 2958.JPG,Apple___Apple_scab,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Apple___Apple_scab/ac3ae45a-aaff-44c0-979d-6a2a8ba50ccf___FREC_Scab 3520.JPG,Apple___Apple_scab,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Apple___Apple_scab/b7740d56-4540-44f5-82c4-3916da0cba20___FREC_Scab 3229.JPG,Apple___Apple_scab,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Apple___Apple_scab/be517ff5-5e63-4f6a-9f55-1522c9ec972b___FREC_Scab 3123.JPG,Apple___Apple_scab,Unhealthy,lab,PlantVillage,train
+grey_lesions,data/raw/plantvillage/Apple___Apple_scab/b011c870-c5a5-4990-9ddd-e00e02613780___FREC_Scab 3493.JPG,Apple___Apple_scab,Unhealthy,lab,PlantVillage,train
+healthy,data/raw/plantvillage/Apple___healthy/75ab3bb8-40ec-4292-9c61-deaa6fcf71f0___RS_HL 8054.JPG,Apple___healthy,Healthy,lab,PlantVillage,train
+healthy,data/raw/plantvillage/Strawberry___healthy/4f288160-7226-425e-afe7-826fb19af650___RS_HL 2043.JPG,Strawberry___healthy,Healthy,lab,PlantVillage,train
+healthy,data/raw/plantvillage/Tomato___healthy/870b4923-2db1-4e01-827b-fbea6ed404cb___RS_HL 0164.JPG,Tomato___healthy,Healthy,lab,PlantVillage,train
+healthy,data/raw/plantvillage/Tomato___healthy/303db099-b4e0-4c12-801d-cf501857075a___RS_HL 9942.JPG,Tomato___healthy,Healthy,lab,PlantVillage,train
+healthy,data/raw/plantvillage/Peach___healthy/e7e94555-86a0-4798-970f-6c9b1a6fd0b9___Rutg._HL 2469.JPG,Peach___healthy,Healthy,lab,PlantVillage,train
+healthy,data/raw/plantvillage/Tomato___healthy/753c3f29-c572-4765-8711-b5ac2cd0aaba___RS_HL 0310.JPG,Tomato___healthy,Healthy,lab,PlantVillage,train
+healthy,data/raw/plantvillage/Cherry_(including_sour)___healthy/1122ce37-d8a9-451e-b78c-841200726e0b___JR_HL 4204.JPG,Cherry___healthy,Healthy,lab,PlantVillage,train
+healthy,"data/raw/plantvillage/Pepper,_bell___healthy/87000a42-0484-45ed-96c1-14b6fa9895e5___JR_HL 7650.JPG",Pepper_bell___healthy,Healthy,lab,PlantVillage,train
+healthy,data/raw/plantvillage/Peach___healthy/a7e0201e-9d8a-43b5-8118-2b6d1e203ba3___Rutg._HL 2420.JPG,Peach___healthy,Healthy,lab,PlantVillage,train
+healthy,"data/raw/plantvillage/Pepper,_bell___healthy/df451c9c-6b43-4ed7-9f21-9df981439c8e___JR_HL 8253.JPG",Pepper_bell___healthy,Healthy,lab,PlantVillage,train
+healthy,data/raw/plantvillage/Cherry_(including_sour)___healthy/3234e174-67e1-47ed-9240-0d0091b5378d___JR_HL 9567.JPG,Cherry___healthy,Healthy,lab,PlantVillage,train
+healthy,"data/raw/plantvillage/Pepper,_bell___healthy/60006156-5cb7-4bae-ad51-8e4a3401e298___JR_HL 7848.JPG",Pepper_bell___healthy,Healthy,lab,PlantVillage,train
+field,data/raw/plantdoc/train/Tomato Septoria leaf spot/Septoria-461x346.jpg,Tomato___Septoria_leaf_spot,Unhealthy,field,PlantDoc,train
+field,data/raw/plantdoc/train/grape leaf black rot/0gb.jpg,Grape___Black_rot,Unhealthy,field,PlantDoc,train
+field,data/raw/plantdoc/train/Tomato Septoria leaf spot/49-Septoria-leaf-spot.jpg,Tomato___Septoria_leaf_spot,Unhealthy,field,PlantDoc,train
+field,data/raw/plantdoc/train/Tomato Septoria leaf spot/tomato-septoria-3-500x384.jpg,Tomato___Septoria_leaf_spot,Unhealthy,field,PlantDoc,train
+field,data/raw/plantdoc/train/Tomato Septoria leaf spot/septoria-leaf-spot-treatment-leaf-spot-septoria-le_946ae43631.jpg,Tomato___Septoria_leaf_spot,Unhealthy,field,PlantDoc,train
+field,data/raw/plantdoc/train/Tomato Early blight leaf/Tomato-Early-Blight-Leaf-Examples-Cornell-University.jpg,Tomato___Early_blight,Unhealthy,field,PlantDoc,train
+field,data/raw/plantdoc/train/Tomato mold leaf/gray-mold-on-tomato-leaf.jpg,Tomato___Leaf_Mold,Unhealthy,field,PlantDoc,train
+field,data/raw/plantdoc/train/Apple rust leaf/cedar-apple-rust_fig-2.jpg,Apple___Cedar_apple_rust,Unhealthy,field,PlantDoc,train
+field,data/raw/plantdoc/train/Tomato leaf yellow virus/tomato-yellow-leaf-curl-virus-tomato-1.jpg,Tomato___Yellow_Leaf_Curl_Virus,Unhealthy,field,PlantDoc,train
+field,data/raw/plantdoc/train/Tomato Septoria leaf spot/4853086777_bc41d29801.jpg,Tomato___Septoria_leaf_spot,Unhealthy,field,PlantDoc,train
+field,data/raw/plantdoc/train/grape leaf black rot/Black_Rot_of_Grapes1154.jpg,Grape___Black_rot,Unhealthy,field,PlantDoc,train
+field,data/raw/plantdoc/train/Apple rust leaf/buckinghamshire-speen-garden-detail-cedar-apple-ru_99bbaba77c.jpg,Apple___Cedar_apple_rust,Unhealthy,field,PlantDoc,train

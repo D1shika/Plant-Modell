@@ -1,21 +1,34 @@
 """Command-line predictor.
 
   python src/predict.py --image "path\\to\\leaf.jpg"
-  python src/predict.py --image "path\\to\\leaf.jpg" --temp 28 --rainfall 10 --humidity 40 --soil_moisture 20
   python src/predict.py --folder "path\\to\\folder"
+  python src/predict.py --image "leaf.jpg" --variant fusion --temp 28 --rainfall 10 --humidity 40 --soil_moisture 20
+                                                                          (EXPERIMENTAL fusion model, simulated inputs)
 
-Outputs per image: crop, health, cause, condition, severity with confidences, a Grad-CAM overlay (condition head,
-EfficientNet-B0 last conv block) and a CSV in outputs/predictions/.
+Default model: image-only (models/image/best.pt). It matches the fusion model on every test metric (condition accuracy
+0.967 vs 0.969, overlapping 95% CIs; outputs/tables/table3_modality_ablation.md) and needs no environment values.
 
-CONFIDENCE = the model's softmax probability of the predicted class for that head (for severity: the probability of the
-predicted ordinal class derived from the cumulative outputs). It is NOT a calibrated probability of being correct.
-Cause: the model only saw Biotic examples (no abiotic data were available), so it can never meaningfully say Abiotic.
-Severity: a heuristic visual-damage estimate, not an expert assessment. Environment inputs were SIMULATED in training;
-if they are not given, the training-set means are used.
+Outputs per image: crop, health, cause, condition, severity, an uncertainty flag, a Grad-CAM overlay (condition head,
+EfficientNet-B0 last conv block) and a CSV in outputs/predictions/<timestamp>/ (or --out_dir).
 
-The model configuration, label maps and image size come from the checkpoint; the environment normalisation statistics
-from models/env_stats.json (fitted on the training split). The checkpoint is loaded strictly: a mismatching or missing
-checkpoint raises an error instead of predicting from random weights.
+CONSISTENCY: crop and health are derived from the condition head (src/reconcile.py), so the three always agree. The
+independent crop/health heads are still computed and written to the CSV as raw_* columns; 'head_disagreement' lists
+heads whose own answer differs. This makes the displayed answer consistent; it does not change recognition accuracy.
+
+CONFIDENCE: condition_conf = softmax probability of the chosen condition; crop_conf / health_conf = probability mass of
+all conditions belonging to that crop / health state. These are RAW (uncalibrated) values unless
+models/calibration/<variant>.json (validation-only temperature scaling) exists. They are NOT probabilities of being
+correct. The uncertainty thresholds are provisional unless that calibration file supplies them.
+
+CAUSE: the training data contain no abiotic examples, so cause is reported as unavailable for unhealthy leaves.
+SEVERITY: heuristic visual-damage estimate (not expert-validated); raw cumulative outputs and the rank-consistent
+projection are both written to the CSV.
+ENVIRONMENT (fusion variants only, EXPERIMENTAL): the four values were SIMULATED during training, are not real sensor
+measurements, and showed no measurable effect on predictions; they cannot establish any link between environment and
+disease. If omitted with a fusion variant, the training-set means are used.
+
+The model configuration, label maps and image size come from the checkpoint; it is loaded strictly, so a mismatching or
+missing checkpoint raises an error instead of predicting from random weights.
 """
 import argparse
 import csv
@@ -34,19 +47,23 @@ from PIL import Image, UnidentifiedImageError
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import config as C  # noqa: E402
+from class_meta import validate as validate_meta  # noqa: E402
 from dataset import load_rgb_256, make_transform  # noqa: E402
 from infer import GradCAM, get_device, load_variant, overlay  # noqa: E402
-from model import SEVERITY, decode_severity  # noqa: E402
+from reconcile import CAUSE_UNAVAILABLE, CAUSE_UNAVAILABLE_MSG, UNCERTAIN_MSG, reconcile  # noqa: E402
 
 EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".tif", ".tiff"}
 MAX_BYTES = 50 * 2**20
 MAX_IMAGES = 5000
-LOW_CONF = 0.5
+VARIANTS = ["image", "env", "fusion", "fusion_shuffled_env"]
+ENV_VARIANTS = {"env", "fusion", "fusion_shuffled_env"}
 ENV_ARGS = ("temp", "rainfall", "humidity", "soil_moisture")
 ENV_RANGES = {"temp": (-50.0, 70.0), "rainfall": (0.0, 2000.0), "humidity": (0.0, 100.0), "soil_moisture": (0.0, 100.0)}
 ENV_MSG = "Environment values not provided: using training averages"
-LOW_MSG = "Low confidence - this may not be one of the 8 supported crops or may be a poor photo"
+EXPERIMENTAL_MSG = ("EXPERIMENTAL variant '{v}': trained with SIMULATED environment values (not sensor data). They had no "
+                    "measurable effect on predictions; use the default image-only model for normal use.")
 OUT_DIR = C.OUTPUTS / "predictions"
+CALIB_DIR = C.MODELS / "calibration"
 
 
 def fail(msg):
@@ -99,39 +116,71 @@ def env_values(args, stats):
     return vals, src
 
 
-def severity_probs(logits):
-    p = torch.sigmoid(logits)
-    p1, p2 = p[:, 0], torch.minimum(p[:, 1], p[:, 0])
-    return torch.stack([1 - p1, (p1 - p2).clamp(min=0), p2], 1)
+def load_calibration(variant):
+    """models/calibration/<variant>.json from validation-only calibration (src/calibrate.py), or None."""
+    p = CALIB_DIR / f"{variant}.json"
+    if not p.exists():
+        return None
+    cal = json.load(open(p))
+    if cal.get("fitted_on") != "val":
+        fail(f"{p} was not fitted on the validation split; refusing to use it")
+    return cal
 
 
-def main():
-    ap = argparse.ArgumentParser(description="Leaf crop / health / cause / condition / severity predictor")
+def build_parser():
+    ap = argparse.ArgumentParser(description="Leaf crop / health / condition / severity predictor")
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--image", help="path to one leaf photo")
     g.add_argument("--folder", help="folder of leaf photos (non-recursive)")
     for k in ENV_ARGS:
-        ap.add_argument(f"--{k}", type=float, default=None, help=f"{k} (optional; training average if omitted)")
-    ap.add_argument("--variant", default="fusion", choices=["image", "env", "fusion", "fusion_shuffled_env"])
+        ap.add_argument(f"--{k}", type=float, default=None,
+                        help=f"{k}: EXPERIMENTAL, only with a fusion/env variant (simulated during training)")
+    ap.add_argument("--variant", default="image", choices=VARIANTS,
+                    help="model to use (default: image). fusion / fusion_shuffled_env / env are experimental")
     ap.add_argument("--no-cam", action="store_true", help="skip Grad-CAM overlays")
     ap.add_argument("--max_images", type=int, default=MAX_IMAGES)
-    args = ap.parse_args()
-    
+    ap.add_argument("--out_dir", default=None, help="folder for results (default: outputs/predictions/<timestamp>)")
+    return ap
+
+
+def main(argv=None):
+    args = build_parser().parse_args(argv)
+    env_given = [k for k in ENV_ARGS if getattr(args, k) is not None]
+    if env_given and args.variant not in ENV_VARIANTS:
+        fail(f"--{', --'.join(env_given)} only apply to the experimental fusion variants (the default image-only model "
+             f"does not use environment values). Remove them, or add --variant fusion.")
+
     stats = json.load(open(C.MODELS / "env_stats.json"))
     dev = get_device()
     try:
         model, maps, cfg = load_variant(args.variant, "best", dev)
     except (FileNotFoundError, ValueError, RuntimeError) as e:
         fail(str(e))
+    problems = validate_meta(maps["condition"], maps["crop"])
+    if problems:
+        fail("class metadata does not match the checkpoint: " + " | ".join(problems))
     if stats["features"] != maps["env_features"]:
         fail("env_stats.json feature order does not match the checkpoint's label maps")
     # cause classes that had training examples (older checkpoints lack the key; models/label_maps.json is current)
-    try:
-        trained_causes = json.load(open(C.MODELS / "label_maps.json")).get("cause_trained_classes", ["Biotic"])
-    except (OSError, ValueError):
-        trained_causes = ["Biotic"]
-    env, env_src = env_values(args, stats)
-    env_norm = (np.array([env[k] for k in ENV_ARGS]) - np.array(stats["mean"])) / np.array(stats["std"])
+    trained_causes = maps.get("cause_trained_classes")
+    if trained_causes is None:
+        try:
+            trained_causes = json.load(open(C.MODELS / "label_maps.json")).get("cause_trained_classes", ["Biotic"])
+        except (OSError, ValueError):
+            trained_causes = ["Biotic"]
+    cal = load_calibration(args.variant)
+    temperature = cal.get("temperature") if cal else None
+    thresholds = cal.get("thresholds") if cal else None
+    conf_kind = "calibrated (validation temperature scaling)" if cal else "raw softmax (uncalibrated)"
+
+    uses_env = args.variant in ENV_VARIANTS
+    if uses_env:
+        print(EXPERIMENTAL_MSG.format(v=args.variant))
+        env, env_src = env_values(args, stats)
+        env_norm = (np.array([env[k] for k in ENV_ARGS]) - np.array(stats["mean"])) / np.array(stats["std"])
+    else:  # the image-only network has no environment branch; a placeholder tensor is passed and ignored
+        env, env_src = {k: float("nan") for k in ENV_ARGS}, "not_used"
+        env_norm = np.zeros(len(ENV_ARGS))
 
     if args.image:
         paths = [Path(args.image)]
@@ -145,8 +194,7 @@ def main():
         if len(paths) > args.max_images:
             fail(f"{len(paths)} images exceeds --max_images {args.max_images}; raise it explicitly if intended")
 
-    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_dir = OUT_DIR / stamp
+    run_dir = Path(args.out_dir) if args.out_dir else OUT_DIR / datetime.now().strftime("%Y%m%d_%H%M%S")
     run_dir.mkdir(parents=True, exist_ok=True)
     tf = make_transform(False, cfg["img_size"])
     rows, valid_imgs, valid_paths = [], [], []
@@ -167,36 +215,8 @@ def main():
         x = torch.stack([tf(i) for i in batch]).to(dev)
         with torch.no_grad(), torch.autocast(dev.type, dtype=torch.float16, enabled=dev.type == "cuda"):
             out = model(x, envt.expand(len(batch), -1))
-        out = {k: v.float().cpu() for k, v in out.items()}
-        probs = {h: torch.softmax(out[h], 1) for h in ("crop", "health", "cause", "condition")}
-        sev = decode_severity(out["severity"])
-        sprob = severity_probs(out["severity"])
-        sp = torch.sigmoid(out["severity"])
-        for i in range(len(batch)):
-            r = {}
-            for h, names in (("crop", maps["crop"]), ("health", maps["health"]), ("cause", maps["cause"]),
-                             ("condition", maps["condition"])):
-                c, k = probs[h][i].max(0)
-                r[h], r[h + "_conf"] = names[int(k)], float(c)
-            unhealthy = r["health"] == "Unhealthy"
-            # only classes seen in training can be reported; with a single trained class the head carries no information
-            ti = [maps["cause"].index(c) for c in trained_causes]
-            if len(ti) == 1:
-                r["cause"], r["cause_conf"] = maps["cause"][ti[0]], float("nan")
-            else:
-                pc = probs["cause"][i][ti]
-                pc = pc / pc.sum()
-                r["cause"], r["cause_conf"] = maps["cause"][ti[int(pc.argmax())]], float(pc.max())
-            if not unhealthy:
-                r["cause"], r["cause_conf"] = "None", float("nan")
-            r["severity"] = SEVERITY[int(sev[i])] if unhealthy else "None"
-            r["severity_conf"] = float(sprob[i, int(sev[i])]) if unhealthy else float("nan")
-            r["p_gt_mild"], r["p_gt_moderate"] = float(sp[i, 0]), float(sp[i, 1])
-            relevant = ["crop", "health", "condition"] + (["severity"] if unhealthy else [])
-            if unhealthy and len(trained_causes) > 1:
-                relevant.append("cause")
-            r["low_confidence_heads"] = ";".join(h for h in relevant if r[h + "_conf"] < LOW_CONF)
-            results.append(r)
+        logits = {k: v.float().cpu().numpy() for k, v in out.items()}
+        results += reconcile(logits, maps, trained_causes, temperature, thresholds)
 
     cams = {}
     if not args.no_cam and model.use_img:
@@ -216,12 +236,14 @@ def main():
 
     for p, r in zip(valid_paths, results):
         print(f"\nImage: {p}")
+        if r["uncertain"]:
+            print(f"  RESULT:     {UNCERTAIN_MSG}")
+            print(f"              (why: {r['uncertain_reasons']}; best guess shown below)")
         print(f"  Crop:       {r['crop']} (confidence {r['crop_conf']:.2f})")
         print(f"  Health:     {r['health']} (confidence {r['health_conf']:.2f})")
         if r["health"] == "Unhealthy":
-            if r["cause_conf"] != r["cause_conf"]:  # NaN: single trained class
-                print(f"  Cause:      {r['cause']} [only class seen in training; no abiotic data, so abiotic stress "
-                      f"cannot be identified - not a meaningful prediction]")
+            if r["cause"] == CAUSE_UNAVAILABLE:
+                print("  Cause:      unavailable (no abiotic training data; cannot tell disease from nutrient/water stress)")
             else:
                 print(f"  Cause:      {r['cause']} (confidence {r['cause_conf']:.2f})")
         else:
@@ -231,23 +253,32 @@ def main():
             print(f"  Severity:   {r['severity']} (confidence {r['severity_conf']:.2f}) [heuristic damage estimate]")
         else:
             print("  Severity:   None (healthy)")
+        if r["head_disagreement"]:
+            print(f"  Diagnostic: the model's separate {r['head_disagreement'].replace(';', '/')} output disagreed "
+                  f"(raw crop {r['raw_crop']}, raw health {r['raw_health']}); the answer above follows the condition.")
         if str(p) in cams:
             print(f"  Grad-CAM:   {cams[str(p)]}")
-        if r["low_confidence_heads"]:
-            print(f"  {LOW_MSG}  (heads below {LOW_CONF}: {r['low_confidence_heads'].replace(';', ', ')})")
-        rows.append({"image": str(p), "status": "ok", **{k: (round(v, 4) if isinstance(v, float) else v)
-                                                        for k, v in r.items()}, **{k: round(env[k], 3) for k in ENV_ARGS},
-                     "env_source": env_src, "cam_path": cams.get(str(p), ""), "variant": args.variant})
-    print(f"\nConfidence = softmax probability of the predicted class (not a calibrated probability).")
-    cols = ["image", "status", "crop", "crop_conf", "health", "health_conf", "cause", "cause_conf", "condition",
-            "condition_conf", "severity", "severity_conf", "p_gt_mild", "p_gt_moderate", "low_confidence_heads",
-            *ENV_ARGS, "env_source", "cam_path", "variant"]
+        rows.append({"image": str(p), "status": "ok",
+                     **{k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()},
+                     **{k: (round(env[k], 3) if uses_env else "") for k in ENV_ARGS},
+                     "env_source": env_src, "confidence_type": conf_kind, "cam_path": cams.get(str(p), ""),
+                     "variant": args.variant})
+    print(f"\nConfidence = {conf_kind}; not a probability of being correct. Uncertainty thresholds are "
+          f"{'from validation calibration' if thresholds else 'provisional'}.")
+    if any(r["health"] == "Unhealthy" for r in results) and trained_causes is not None and len(set(trained_causes)) < 2:
+        print(CAUSE_UNAVAILABLE_MSG)
+    cols = ["image", "status", "uncertain", "uncertain_reasons", "crop", "crop_conf", "health", "health_conf",
+            "condition", "condition_conf", "cause", "cause_conf", "severity", "severity_conf",
+            "raw_crop", "raw_crop_conf", "raw_health", "raw_health_conf", "head_disagreement", "marginal_disagreement",
+            "raw_p_gt_mild", "raw_p_gt_moderate", "p_gt_moderate_projected", "ordinal_violation_raw",
+            *ENV_ARGS, "env_source", "confidence_type", "cam_path", "variant"]
     csv_path = run_dir / "predictions.csv"
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore")
         w.writeheader()
         w.writerows(rows)
     print(f"Results written to {csv_path}")
+    return results
 
 
 if __name__ == "__main__":

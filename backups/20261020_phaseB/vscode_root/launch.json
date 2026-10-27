@@ -1,0 +1,105 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "1 - Predict: SAMPLE photo (no questions)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/fruit_health/src/predict.py",
+      "args": ["--image", "${workspaceFolder}/fruit_health/outputs/predict_demo/PlantDoc/WildGrapeLeaf_cutout.jpg"],
+      "python": "${workspaceFolder}/fruit_health/.venv/Scripts/python.exe",
+      "cwd": "${workspaceFolder}/fruit_health",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "2 - Predict: the photo open in the editor",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/fruit_health/src/predict.py",
+      "args": ["--image", "${file}"],
+      "python": "${workspaceFolder}/fruit_health/.venv/Scripts/python.exe",
+      "cwd": "${workspaceFolder}/fruit_health",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "3 - Predict: type the path of a photo",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/fruit_health/src/predict.py",
+      "args": ["--image", "${input:typedImage}"],
+      "python": "${workspaceFolder}/fruit_health/.venv/Scripts/python.exe",
+      "cwd": "${workspaceFolder}/fruit_health",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "4 - Predict: SAMPLE folder of photos (no questions)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/fruit_health/src/predict.py",
+      "args": ["--folder", "${workspaceFolder}/fruit_health/outputs/predict_demo/PlantVillage"],
+      "python": "${workspaceFolder}/fruit_health/.venv/Scripts/python.exe",
+      "cwd": "${workspaceFolder}/fruit_health",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "5 - Predict: type the path of a folder of photos",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/fruit_health/src/predict.py",
+      "args": ["--folder", "${input:typedFolder}"],
+      "python": "${workspaceFolder}/fruit_health/.venv/Scripts/python.exe",
+      "cwd": "${workspaceFolder}/fruit_health",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "6 - Predict: photo open in the editor + environment values",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/fruit_health/src/predict.py",
+      "args": [
+        "--image", "${file}",
+        "--temp", "${input:envTemp}",
+        "--rainfall", "${input:envRain}",
+        "--humidity", "${input:envHumidity}",
+        "--soil_moisture", "${input:envSoil}"
+      ],
+      "python": "${workspaceFolder}/fruit_health/.venv/Scripts/python.exe",
+      "cwd": "${workspaceFolder}/fruit_health",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "7 - Self-check: smoke test (18 checks)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/fruit_health/src/smoke_test.py",
+      "python": "${workspaceFolder}/fruit_health/.venv/Scripts/python.exe",
+      "cwd": "${workspaceFolder}/fruit_health",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "typedImage",
+      "type": "promptString",
+      "description": "Type or paste the full path of a leaf photo (no quotes), then press Enter",
+      "default": "${workspaceFolder}\\fruit_health\\outputs\\predict_demo\\PlantDoc\\WildGrapeLeaf_cutout.jpg"
+    },
+    {
+      "id": "typedFolder",
+      "type": "promptString",
+      "description": "Type or paste the full path of a folder of leaf photos (no quotes), then press Enter",
+      "default": "${workspaceFolder}\\fruit_health\\outputs\\predict_demo\\PlantVillage"
+    },
+    { "id": "envTemp", "type": "promptString", "description": "Temperature in C (simulated-data input; does not change the result)", "default": "25" },
+    { "id": "envRain", "type": "promptString", "description": "Rainfall in mm", "default": "50" },
+    { "id": "envHumidity", "type": "promptString", "description": "Humidity in % (0-100)", "default": "60" },
+    { "id": "envSoil", "type": "promptString", "description": "Soil moisture in % (0-100)", "default": "45" }
+  ]
+}
